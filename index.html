@@ -1,0 +1,2411 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#172b25"><meta name="description" content="BookFlow — a calmer way to run a fully booked business. Interactive appointment scheduling demo.">
+<title>BookFlow · Make room for what matters</title>
+<style>:root {
+  --bg: #f4f6f5;
+  --surface: #fff;
+  --surface2: #f8faf9;
+  --text: #1b3029;
+  --muted: #62736b;
+  --line: #e1e8e4;
+  --brand: #235c45;
+  --brand-hover: #174530;
+  --lime: #d6ed85;
+  --sidebar: #172b25;
+  --side-text: #bdccc5;
+  --accent: #6e5acb;
+  --blue: #386c94;
+  --danger: #ad3545;
+  --shadow: 0 12px 40px #16392b0b;
+  --radius: 12px;
+  --font:
+    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --company: #4c7962;
+}
+[data-theme="dark"] {
+  --bg: #101c17;
+  --surface: #18271f;
+  --surface2: #1e3026;
+  --text: #e5efe7;
+  --muted: #a6b9ad;
+  --line: #32473a;
+  --brand: #a9d6b6;
+  --brand-hover: #cee9d4;
+  --lime: #d6ed85;
+  --accent: #bcabff;
+  --blue: #98c9ed;
+  --danger: #ff9ba9;
+  --shadow: 0 12px 40px #0002;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 var(--font);
+}
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+button,
+a,
+input,
+select,
+textarea {
+  -webkit-tap-highlight-color: transparent;
+}
+button,
+a {
+  touch-action: manipulation;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button {
+  color: inherit;
+}
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #8872f1;
+  outline-offset: 3px;
+}
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+h1 {
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: -1.1px;
+  font-weight: 650;
+}
+h2 {
+  font-size: 18px;
+  letter-spacing: -0.35px;
+  font-weight: 650;
+}
+h3 {
+  font-size: 15px;
+  font-weight: 650;
+}
+small,
+.small {
+  font-size: 12px;
+}
+.muted {
+  color: var(--muted);
+}
+.mono {
+  font-family: ui-monospace, monospace;
+}
+.icon {
+  width: 19px;
+  height: 19px;
+  stroke: currentColor;
+  stroke-width: 1.65;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 22px;
+  letter-spacing: -0.8px;
+  font-weight: 700;
+}
+.mark {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 34px;
+  background: var(--lime);
+  color: #172b25;
+  border-radius: 9px 9px 9px 2px;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -6px;
+  padding-right: 6px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 9px 15px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  font-weight: 550;
+  white-space: nowrap;
+}
+.btn:hover {
+  background: var(--surface2);
+  border-color: var(--muted);
+}
+.btn.primary {
+  background: var(--brand);
+  color: var(--surface);
+  border-color: var(--brand);
+}
+.btn.primary:hover {
+  background: var(--brand-hover);
+}
+.btn.lime {
+  background: var(--lime);
+  color: #172b25;
+  border-color: var(--lime);
+}
+.btn.danger {
+  color: var(--danger);
+}
+.btn.sm {
+  padding: 6px 10px;
+  min-height: 32px;
+  font-size: 12px;
+}
+.iconbtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  width: 36px;
+  height: 36px;
+}
+.iconbtn:hover {
+  background: var(--surface2);
+}
+.link {
+  color: var(--brand);
+  font-weight: 600;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.between {
+  justify-content: space-between;
+}
+.wrap {
+  flex-wrap: wrap;
+}
+.stack {
+  display: grid;
+  gap: 16px;
+}
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+.grid3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+.pad {
+  padding: 24px;
+}
+.panelhead {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 550;
+  padding: 3px 8px;
+  border-radius: 5px;
+  background: var(--surface2);
+  color: var(--muted);
+  white-space: nowrap;
+}
+.tag.confirmed,
+.tag.active {
+  background: #e6f3eb;
+  color: #286b47;
+}
+.tag.pending,
+.tag.waitlist {
+  background: #fff2d6;
+  color: #805a0b;
+}
+.tag.completed {
+  background: #eaf0fc;
+  color: #446290;
+}
+.tag.cancelled,
+.tag.no-show {
+  background: #fce9ec;
+  color: #a02f45;
+}
+.tag.purple {
+  background: #f0ecff;
+  color: #7052af;
+}
+.avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 650;
+  background: #eae6f5;
+  color: #675589;
+  flex-shrink: 0;
+}
+.avatar.green {
+  background: #deebe1;
+  color: #3b6950;
+}
+.avatar.gold {
+  background: #f2e8d7;
+  color: #8b663c;
+}
+.avatar.blue {
+  background: #ddebf0;
+  color: #416c7c;
+}
+.subtext {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--muted);
+}
+.empty .icon {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 12px;
+}
+.empty h3 {
+  color: var(--text);
+  margin-bottom: 5px;
+}
+.progress {
+  height: 6px;
+  background: var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--brand);
+  border-radius: 8px;
+}
+.pillgroup {
+  display: inline-flex;
+  padding: 3px;
+  background: var(--surface2);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  gap: 2px;
+}
+.pillgroup button {
+  background: none;
+  border: 0;
+  padding: 5px 12px;
+  border-radius: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.pillgroup button[aria-selected="true"] {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 4px #0001;
+}
+.field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+.field label {
+  font-size: 12px;
+  font-weight: 600;
+}
+.field input,
+.field select,
+.field textarea,
+.input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: var(--surface);
+  color: var(--text);
+  padding: 10px 12px;
+}
+.field textarea {
+  resize: vertical;
+  min-height: 85px;
+}
+.field input[type="color"] {
+  padding: 4px;
+}
+.field input[type="checkbox"] {
+  width: 16px;
+  min-height: 16px;
+}
+.error {
+  color: var(--danger);
+  font-size: 12px;
+  background: var(--surface2);
+  padding: 10px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+}
+.error:empty {
+  display: none;
+}
+.help {
+  font-size: 12px;
+  color: var(--muted);
+}
+.split {
+  display: flex;
+  gap: 24px;
+}
+.screenhead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.screenhead p {
+  color: var(--muted);
+  margin-top: 7px;
+}
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  display: inline-block;
+}
+.page {
+  max-width: 1440px;
+  margin: auto;
+}
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: 232px;
+  background: var(--sidebar);
+  color: var(--side-text);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  padding: 27px 16px 16px;
+}
+.sidebar .logo {
+  color: #fff;
+  margin: 0 12px 32px;
+}
+.sidegroup {
+  font-size: 11px;
+  color: #829b8e;
+  padding: 16px 14px 7px;
+}
+.sidenav {
+  display: grid;
+  gap: 3px;
+}
+.navitem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 13px;
+  min-height: 42px;
+  border-radius: 7px;
+  color: var(--side-text);
+  font-size: 13px;
+}
+.navitem:hover {
+  background: #ffffff0c;
+  color: #fff;
+}
+.navitem.active {
+  background: #cce5a41a;
+  color: var(--lime);
+}
+.navitem .count {
+  margin-left: auto;
+  font-size: 10px;
+  background: #ffffff12;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+.sidebottom {
+  margin-top: auto;
+}
+.planbox {
+  padding: 15px;
+  background: #ffffff08;
+  border: 1px solid #ffffff12;
+  border-radius: 8px;
+  margin: 20px 6px 16px;
+  font-size: 12px;
+}
+.planbox .progress {
+  background: #ffffff1c;
+}
+.planbox .progress span {
+  background: var(--lime);
+}
+.planbox .link {
+  color: var(--lime);
+  font-size: 12px;
+}
+.sideprofile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid #ffffff14;
+  padding: 16px 10px 0;
+}
+.sideprofile strong {
+  color: #fff;
+  font-size: 12px;
+}
+.sideprofile .subtext {
+  color: #9eb2a6;
+  font-size: 10px;
+}
+.appmain {
+  margin-left: 232px;
+}
+.topbar {
+  height: 78px;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 32px;
+  gap: 20px;
+}
+.workspace-select {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.workspace-icon {
+  background: var(--company);
+  color: #fff;
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  border-radius: 7px;
+  font-weight: 700;
+}
+.topbar select {
+  background: none;
+  color: var(--text);
+  border: 0;
+  font-weight: 600;
+  max-width: 190px;
+}
+.topright {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.search-trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-size: 12px;
+}
+.search-trigger kbd {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 1px 5px;
+  font-size: 10px;
+}
+.bell {
+  position: relative;
+}
+.bell:after {
+  content: "";
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  width: 5px;
+  height: 5px;
+  background: var(--brand);
+  border: 2px solid var(--surface);
+  border-radius: 50%;
+}
+.content {
+  padding: 32px;
+  max-width: 1500px;
+  margin: auto;
+}
+.breadcrumb {
+  font-size: 11px;
+  color: var(--muted);
+  margin-bottom: 18px;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.datebadge {
+  font-size: 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 11px;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+}
+.welcome-art {
+  position: absolute;
+  right: 20px;
+  bottom: -25px;
+  opacity: 0.25;
+  width: 170px;
+  height: 150px;
+  transform: rotate(-12deg);
+}
+.welcome-art:before,
+.welcome-art:after {
+  content: "";
+  position: absolute;
+  width: 88px;
+  height: 140px;
+  border: 1px solid var(--brand);
+  border-radius: 45px;
+  transform: rotate(37deg);
+  left: 25px;
+}
+.welcome-art:after {
+  left: 75px;
+  transform: rotate(-37deg);
+}
+.welcome {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(110deg, #eaf1e8, #eff3e8);
+  border: 1px solid #dce6d8;
+  padding: 22px 25px;
+  margin-bottom: 24px;
+  border-radius: 10px;
+  color: #1b3a2a;
+}
+.welcome h2 {
+  font-size: 21px;
+  letter-spacing: -0.6px;
+  margin-bottom: 5px;
+}
+.welcome p {
+  color: #536f5c;
+  font-size: 12px;
+}
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+.metric {
+  padding: 20px 21px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+.metric-label {
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.metric-label .icon {
+  width: 16px;
+  height: 16px;
+  color: #87998e;
+}
+.metric-value {
+  font-size: 29px;
+  line-height: 1.2;
+  font-weight: 650;
+  letter-spacing: -1px;
+  margin-top: 12px;
+}
+.metric-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  margin-top: 9px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.metric-bottom strong {
+  font-weight: 500;
+  color: var(--brand);
+}
+.spark {
+  width: 62px;
+  height: 23px;
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 1.6;
+}
+.dashgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(280px, 1fr);
+  gap: 24px;
+}
+.schedule-tabs {
+  padding: 14px 24px 0;
+}
+.schedule-row {
+  display: grid;
+  grid-template-columns: 65px 3px minmax(0, 1fr) auto;
+  gap: 15px;
+  align-items: center;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+  cursor: pointer;
+}
+.schedule-row:hover {
+  background: var(--surface2);
+}
+.schedule-row:last-child {
+  border-bottom: 0;
+}
+.schedule-time {
+  font-size: 12px;
+  font-weight: 550;
+}
+.schedule-time small {
+  display: block;
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 400;
+}
+.schedule-line {
+  height: 38px;
+  width: 3px;
+  border-radius: 3px;
+  background: #9ea6de;
+}
+.schedule-title {
+  font-size: 13px;
+  font-weight: 600;
+}
+.schedule-meta {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.schedule-title,
+.schedule-meta {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.quicklinks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 17px;
+}
+.quicklink {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  border-radius: 7px;
+  font-size: 12px;
+}
+.quicklink:hover {
+  background: var(--surface2);
+  border-color: var(--muted);
+}
+.quicklink .icon {
+  color: var(--brand);
+}
+.activity-item {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.activity-item:last-child {
+  border: 0;
+}
+.activity-item .activity-dot {
+  width: 27px;
+  height: 27px;
+  background: #eaf1eb;
+  color: #407557;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.activity-dot .icon {
+  width: 13px;
+  height: 13px;
+}
+.activity-item p {
+  line-height: 1.6;
+}
+.activity-item small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.bookinglink {
+  margin-top: 24px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.bookinglink .link-icon {
+  background: #edf2e8;
+  color: var(--brand);
+  border-radius: 8px;
+  padding: 10px;
+  display: flex;
+}
+.bookinglink .grow {
+  flex: 1;
+  min-width: 0;
+}
+.bookinglink h3 {
+  font-size: 12px;
+}
+.bookinglink p {
+  font-size: 11px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.footer-note {
+  font-size: 10px;
+  color: var(--muted);
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 0 0;
+}
+.bottomnav {
+  display: none;
+}
+.collapsed .sidebar {
+  width: 76px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.collapsed .sidebar .navlabel,
+.collapsed .sidebar .sidegroup,
+.collapsed .planbox,
+.collapsed .sideprofile,
+.collapsed .sidebar .logo-name,
+.collapsed .sidebar .count {
+  display: none;
+}
+.collapsed .sidebar .logo {
+  margin-left: 11px;
+}
+.collapsed .appmain {
+  margin-left: 76px;
+}
+.collapsed .navitem {
+  justify-content: center;
+}
+.tablewrap {
+  overflow: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  white-space: nowrap;
+  font-size: 12px;
+}
+th {
+  padding: 13px 18px;
+  background: var(--surface2);
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
+}
+td {
+  padding: 16px 18px;
+  border-top: 1px solid var(--line);
+}
+td .row {
+  gap: 9px;
+}
+td strong {
+  font-weight: 600;
+}
+tr:hover td {
+  background: var(--surface2);
+}
+.toolbar {
+  padding: 17px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.toolbar input {
+  max-width: 280px;
+}
+.toolbar select {
+  width: auto;
+}
+.tablefoot {
+  padding: 16px 20px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 11px;
+  display: flex;
+  justify-content: space-between;
+}
+.service-card {
+  overflow: hidden;
+}
+.service-band {
+  height: 5px;
+  background: var(--company);
+}
+.service-card h2 {
+  margin: 14px 0 5px;
+}
+.service-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  background: var(--surface2);
+  border-radius: 10px;
+  color: var(--brand);
+}
+.service-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+}
+.service-card .btn {
+  margin-top: 18px;
+  width: 100%;
+}
+.staff-card {
+  text-align: center;
+  padding: 26px;
+}
+.staff-card .avatar {
+  width: 58px;
+  height: 58px;
+  font-size: 18px;
+  margin-bottom: 12px;
+}
+.staff-card .tag {
+  margin: 10px 0;
+}
+.staff-card .btn {
+  margin-top: 16px;
+  width: 100%;
+}
+.calendar-toolbar {
+  padding: 18px 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.calendar-scroll {
+  overflow: auto;
+}
+.calendar-grid {
+  display: grid;
+  min-width: 730px;
+  position: relative;
+}
+.calendar-grid.day {
+  min-width: 360px;
+}
+.cal-heading {
+  padding: 13px 5px;
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  font-size: 10px;
+  color: var(--muted);
+  background: var(--surface);
+}
+.cal-heading strong {
+  display: block;
+  font-size: 20px;
+  color: var(--text);
+  font-weight: 500;
+  margin-top: 2px;
+}
+.cal-heading.today strong {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background: var(--brand);
+  color: var(--surface);
+}
+.time-label {
+  font-size: 10px;
+  color: var(--muted);
+  text-align: right;
+  padding: 5px 9px;
+  border-bottom: 1px solid transparent;
+  height: 72px;
+}
+.cal-cell {
+  border-left: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  min-height: 72px;
+  padding: 3px;
+  position: relative;
+}
+.cal-cell.over {
+  background: #d6ed8540;
+  outline: 2px dashed var(--brand);
+  outline-offset: -3px;
+}
+.cal-cell.past {
+  background: var(--surface2);
+}
+.cal-event {
+  background: #e9e5f7;
+  border-left: 3px solid #8a77c3;
+  border-radius: 4px;
+  padding: 6px;
+  font-size: 10px;
+  cursor: grab;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  color: #493b68;
+  min-height: 57px;
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+}
+.cal-event:active {
+  cursor: grabbing;
+}
+.cal-event strong {
+  font-weight: 600;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cal-event.green {
+  background: #e3eee5;
+  border-color: #719c7c;
+  color: #31533c;
+}
+.cal-event.blue {
+  background: #e3edf4;
+  border-color: #71a1c2;
+  color: #355770;
+}
+.cal-event span {
+  opacity: 0.8;
+  font-size: 9px;
+  display: block;
+  margin-top: 3px;
+}
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  min-width: 700px;
+}
+.month-cell {
+  min-height: 120px;
+  border-left: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 8px;
+}
+.month-cell > button {
+  background: none;
+  border: 0;
+  font-size: 12px;
+  padding: 2px 5px;
+}
+.month-cell.today > button {
+  background: var(--brand);
+  color: var(--surface);
+  border-radius: 50%;
+}
+.month-cell .cal-event {
+  min-height: unset;
+  margin-top: 4px;
+  padding: 4px;
+}
+.month-cell.outside {
+  opacity: 0.45;
+}
+.cal-tip {
+  padding: 13px 20px;
+  font-size: 11px;
+  color: var(--muted);
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.chart {
+  height: 230px;
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 24px 8px 28px;
+  border-bottom: 1px solid var(--line);
+}
+.chart-col {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+}
+.chart-col i {
+  display: block;
+  width: 70%;
+  background: var(--brand);
+  border-radius: 4px 4px 0 0;
+  min-height: 2px;
+  opacity: 0.85;
+}
+.chart-col span {
+  position: absolute;
+  bottom: -22px;
+  font-size: 10px;
+  color: var(--muted);
+}
+.chart-col small {
+  font-size: 10px;
+}
+.heatmap {
+  display: grid;
+  grid-template-columns: 35px repeat(9, 1fr);
+  gap: 5px;
+  align-items: center;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 20px;
+}
+.heatmap i {
+  height: 25px;
+  background: var(--brand);
+  border-radius: 3px;
+}
+.settings-layout {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 24px;
+}
+.settings-nav {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+}
+.settings-nav a {
+  padding: 9px 13px;
+  border-radius: 6px;
+  color: var(--muted);
+}
+.settings-nav a.active {
+  background: var(--surface);
+  color: var(--brand);
+  font-weight: 600;
+}
+.settings-content {
+  max-width: 760px;
+}
+.switch {
+  width: 38px;
+  height: 22px;
+  background: var(--line);
+  border: 0;
+  border-radius: 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+.switch:after {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px #0003;
+}
+.switch[aria-checked="true"] {
+  background: var(--brand);
+}
+.switch[aria-checked="true"]:after {
+  left: 19px;
+}
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+.setting-row:last-child {
+  border: 0;
+}
+.price-card {
+  position: relative;
+  padding: 30px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.price-card.featured {
+  border: 2px solid var(--brand);
+}
+.price {
+  font-size: 42px;
+  letter-spacing: -2px;
+  font-weight: 650;
+  margin: 20px 0 4px;
+}
+.price small {
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--muted);
+}
+.price-card ul {
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  margin: 25px 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+.price-card li:before {
+  content: "✓";
+  color: var(--brand);
+  margin-right: 9px;
+}
+.price-card .btn {
+  width: 100%;
+}
+.popular {
+  position: absolute;
+  top: -13px;
+  right: 20px;
+  background: var(--brand);
+  color: var(--surface);
+  font-size: 10px;
+  padding: 4px 12px;
+  border-radius: 4px;
+}
+.public-page {
+  max-width: 1050px;
+  margin: 40px auto;
+  padding: 24px;
+}
+.public-header {
+  text-align: center;
+  padding: 24px;
+}
+.public-header .workspace-icon {
+  margin: auto;
+  width: 52px;
+  height: 52px;
+  font-size: 24px;
+  border-radius: 14px;
+}
+.public-header h1 {
+  margin-top: 17px;
+}
+.booking-widget {
+  display: grid;
+  grid-template-columns: 290px 1fr;
+  overflow: hidden;
+}
+.booking-intro {
+  padding: 30px;
+  background: var(--surface2);
+  border-right: 1px solid var(--line);
+}
+.booking-intro .service-icon {
+  background: var(--surface);
+}
+.booking-intro h2 {
+  font-size: 24px;
+  margin: 20px 0 12px;
+  line-height: 1.2;
+}
+.booking-intro p {
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+.booking-options {
+  padding: 30px;
+}
+.booking-days {
+  display: flex;
+  gap: 8px;
+  overflow: auto;
+  padding: 12px 2px;
+}
+.booking-day {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 10px 14px;
+  min-width: 66px;
+  text-align: center;
+}
+.booking-day strong {
+  display: block;
+  font-size: 21px;
+}
+.booking-day small {
+  color: var(--muted);
+  font-size: 10px;
+}
+.booking-day.selected {
+  background: var(--brand);
+  color: var(--surface);
+  border-color: var(--brand);
+}
+.booking-day.selected small {
+  color: inherit;
+}
+.slots {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 9px;
+  margin-top: 16px;
+}
+.slot {
+  border: 1px solid var(--line);
+  padding: 10px;
+  background: var(--surface);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.slot.selected {
+  background: var(--brand);
+  color: var(--surface);
+}
+.slot:hover {
+  border-color: var(--brand);
+}
+.marketing {
+  background: var(--surface);
+}
+.marketing-nav {
+  max-width: 1200px;
+  margin: auto;
+  padding: 22px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.marketing-nav .row {
+  gap: 28px;
+  font-size: 13px;
+}
+.hero {
+  max-width: 1200px;
+  margin: auto;
+  padding: 70px 32px 80px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+.hero h1 {
+  font-size: 64px;
+  line-height: 1.04;
+  letter-spacing: -3px;
+  max-width: 600px;
+}
+.hero h1 em {
+  font-family: Georgia, serif;
+  color: var(--brand);
+  font-weight: 400;
+}
+.hero p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--muted);
+  max-width: 440px;
+  margin: 25px 0;
+}
+.hero .hero-note {
+  font-size: 11px;
+  margin-top: 17px;
+}
+.hero-demo {
+  background: var(--bg);
+  padding: 24px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 20px 25px 0 var(--lime);
+}
+.hero-demo h3 {
+  font-size: 19px;
+  margin: 16px 0 4px;
+}
+.marketing-section {
+  padding: 75px 32px;
+  max-width: 1200px;
+  margin: auto;
+}
+.marketing-section > h2 {
+  font-size: 36px;
+  letter-spacing: -1.5px;
+  margin-bottom: 15px;
+}
+.marketing-section > p {
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+.feature {
+  padding: 25px 0;
+  border-top: 1px solid var(--line);
+}
+.feature .icon {
+  margin-bottom: 25px;
+  width: 26px;
+  height: 26px;
+  color: var(--brand);
+}
+.feature h3 {
+  font-size: 19px;
+  margin-bottom: 10px;
+}
+.feature p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.trustbar {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 28px;
+  border-block: 1px solid var(--line);
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+.faq {
+  max-width: 750px;
+}
+.faq details {
+  border-bottom: 1px solid var(--line);
+  padding: 20px 0;
+}
+.faq summary {
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 550;
+}
+.faq details p {
+  color: var(--muted);
+  margin-top: 15px;
+  line-height: 1.8;
+}
+.cta {
+  background: var(--sidebar);
+  color: white;
+  border-radius: 16px;
+  padding: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.cta h2 {
+  font-size: 30px;
+}
+.cta p {
+  color: #b6cabd;
+  margin-top: 10px;
+}
+.authpage {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--surface);
+}
+.authaside {
+  background: var(--sidebar);
+  color: white;
+  padding: 40px 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+}
+.authaside h2 {
+  font-size: 48px;
+  line-height: 1.15;
+  letter-spacing: -2px;
+  max-width: 400px;
+}
+.authaside p {
+  color: #a8c0b1;
+  margin-top: 24px;
+  max-width: 370px;
+  font-size: 15px;
+}
+.authmain {
+  padding: 40px;
+  display: grid;
+  place-items: center;
+}
+.authform {
+  max-width: 380px;
+  width: 100%;
+}
+.authform h1 {
+  margin-bottom: 10px;
+}
+.authform > p {
+  color: var(--muted);
+  margin-bottom: 30px;
+}
+.authform .btn {
+  width: 100%;
+}
+.authlinks {
+  font-size: 12px;
+  text-align: center;
+  margin-top: 24px;
+}
+.steps {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+.steps span {
+  height: 4px;
+  flex: 1;
+  background: var(--line);
+  border-radius: 8px;
+}
+.steps span.active {
+  background: var(--brand);
+}
+.onboard {
+  max-width: 520px;
+  margin: 48px auto;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+.onboard h1 {
+  margin-bottom: 8px;
+}
+.onboard p {
+  color: var(--muted);
+  margin-bottom: 25px;
+}
+.onboard .row.between {
+  margin-top: 24px;
+}
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: #07191080;
+  backdrop-filter: blur(3px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal {
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 30px 100px #0003;
+}
+.modal.wide {
+  max-width: 700px;
+}
+.modal-head {
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  z-index: 2;
+}
+.modal-body {
+  padding: 24px;
+}
+.modal-foot {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 16px 24px;
+  border-top: 1px solid var(--line);
+}
+.modal .grid2 {
+  gap: 16px;
+}
+.toast-region {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: grid;
+  gap: 8px;
+  max-width: min(420px, calc(100vw - 32px));
+}
+.toast {
+  background: var(--sidebar);
+  border: 1px solid #476354;
+  color: #fff;
+  padding: 13px 16px;
+  border-radius: 9px;
+  box-shadow: 0 8px 30px #0002;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+.toast button {
+  border: 0;
+  background: none;
+  color: var(--lime);
+  font-size: 12px;
+  font-weight: 600;
+}
+.toast .icon {
+  color: var(--lime);
+  width: 17px;
+}
+.command-input {
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 20px 24px;
+  background: var(--surface);
+  color: var(--text);
+  width: 100%;
+  font-size: 16px;
+}
+.command-results {
+  padding: 8px;
+  max-height: 350px;
+  overflow: auto;
+}
+.command-result {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  width: 100%;
+  background: none;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px;
+}
+.command-result:hover,
+.command-result:focus {
+  background: var(--surface2);
+}
+.command-result small {
+  margin-left: auto;
+  color: var(--muted);
+}
+.skeleton {
+  height: 110px;
+  background: linear-gradient(90deg, var(--line), var(--surface2), var(--line));
+  border-radius: 10px;
+}
+.skeleton:nth-child(2) {
+  height: 300px;
+  margin-top: 24px;
+}
+.restricted {
+  max-width: 480px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 32px;
+}
+.notification-list {
+  max-height: 400px;
+  overflow: auto;
+}
+.divider {
+  height: 1px;
+  background: var(--line);
+  margin: 24px 0;
+}
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+code {
+  background: var(--surface2);
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  display: block;
+  overflow-wrap: anywhere;
+  font-size: 11px;
+}
+.skip {
+  position: fixed;
+  top: -60px;
+  left: 20px;
+  background: var(--brand);
+  color: var(--surface);
+  padding: 10px;
+  z-index: 300;
+}
+.skip:focus {
+  top: 10px;
+}
+.mobile-only {
+  display: none;
+}
+.metric,
+.panel,
+.appmain,
+.dashgrid > * {
+  min-width: 0;
+}
+.tablewrap {
+  position: relative;
+}
+h1,
+h2,
+h3 {
+  overflow-wrap: anywhere;
+}
+.metrics {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.month-cell.over {
+  background: #d6ed8540;
+  outline: 2px dashed var(--brand);
+  outline-offset: -3px;
+}
+@media (min-width: 701px) and (max-width: 1000px) {
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .screenhead {
+    flex-wrap: wrap;
+  }
+  .topbar {
+    gap: 8px;
+  }
+  .topbar .row {
+    gap: 6px;
+  }
+  .topbar select {
+    max-width: 150px;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .toast,
+  .modal {
+    animation: enter 0.18s ease-out;
+  }
+  @keyframes enter {
+    from {
+      transform: translateY(8px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  .btn,
+  .navitem {
+    transition: background 0.15s;
+  }
+}
+@media (min-width: 1600px) {
+  .content {
+    padding: 40px 48px;
+  }
+  .topbar {
+    padding: 0 48px;
+  }
+}
+@media (max-width: 1150px) {
+  .sidebar {
+    width: 205px;
+  }
+  .appmain {
+    margin-left: 205px;
+  }
+  .content {
+    padding: 24px;
+  }
+  .topbar {
+    padding: 0 24px;
+  }
+  .dashgrid {
+    grid-template-columns: minmax(0, 1.5fr) minmax(250px, 1fr);
+  }
+  .metric {
+    padding: 16px;
+  }
+  .metrics {
+    gap: 12px;
+  }
+  .metric-bottom {
+    flex-wrap: wrap;
+  }
+  .spark {
+    display: none;
+  }
+  .hero h1 {
+    font-size: 52px;
+  }
+  .hero {
+    gap: 32px;
+  }
+  .grid3 {
+    gap: 14px;
+  }
+  .schedule-row {
+    gap: 10px;
+    padding: 16px;
+  }
+  .schedule-tabs {
+    padding-left: 16px;
+  }
+  .booking-widget {
+    grid-template-columns: 250px 1fr;
+  }
+}
+@media (max-width: 900px) {
+  .dashgrid {
+    grid-template-columns: 1fr;
+  }
+  .dash-side {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .dash-side > .panel {
+    margin: 0 !important;
+  }
+  .grid3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 48px;
+    max-width: 700px;
+  }
+  .hero h1 {
+    font-size: 60px;
+  }
+  .hero-demo {
+    max-width: 500px;
+  }
+  .authaside {
+    padding: 32px;
+  }
+  .authaside h2 {
+    font-size: 38px;
+  }
+  .topright {
+    gap: 5px;
+  }
+  .search-trigger span {
+    display: none;
+  }
+  .settings-layout {
+    grid-template-columns: 140px 1fr;
+    gap: 16px;
+  }
+  .grid2 {
+    gap: 16px;
+  }
+  .booking-widget {
+    grid-template-columns: 1fr;
+  }
+  .booking-intro {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .booking-intro h2 {
+    margin: 10px 0;
+  }
+  .marketing-nav .row {
+    gap: 14px;
+  }
+}
+@media (max-width: 700px) {
+  .sidebar {
+    display: none;
+  }
+  .appmain,
+  .collapsed .appmain {
+    margin-left: 0;
+  }
+  .topbar {
+    height: 64px;
+    padding: 0 16px;
+    gap: 8px;
+  }
+  .topbar select {
+    max-width: 150px;
+    font-size: 12px;
+  }
+  .topright {
+    gap: 2px;
+  }
+  .search-trigger kbd {
+    display: none;
+  }
+  .content {
+    padding: 22px 16px 95px;
+  }
+  .screenhead {
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .screenhead h1 {
+    font-size: 25px;
+  }
+  .screenhead p {
+    font-size: 12px;
+  }
+  .screenhead .btn {
+    font-size: 12px;
+    padding: 8px 11px;
+    min-height: 36px;
+  }
+  .screenhead > .row .datebadge {
+    display: none;
+  }
+  .breadcrumb {
+    display: none;
+  }
+  .welcome {
+    padding: 20px;
+    margin-top: 0;
+  }
+  .welcome h2 {
+    font-size: 19px;
+  }
+  .welcome p {
+    max-width: 220px;
+  }
+  .welcome-art {
+    right: -20px;
+  }
+  .metrics {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .metric {
+    padding: 16px;
+  }
+  .metric-value {
+    font-size: 27px;
+  }
+  .metric-label {
+    font-size: 11px;
+  }
+  .dash-side {
+    display: block;
+  }
+  .dash-side > .panel {
+    margin-bottom: 20px !important;
+  }
+  .dashgrid {
+    gap: 20px;
+  }
+  .schedule-row {
+    grid-template-columns: 55px 3px minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: 16px;
+  }
+  .schedule-row .tag {
+    font-size: 9px;
+    padding: 3px 5px;
+  }
+  .panelhead {
+    padding: 17px 16px;
+  }
+  .panelhead h2 {
+    font-size: 16px;
+  }
+  .pad {
+    padding: 20px;
+  }
+  .grid2,
+  .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .bookinglink {
+    padding: 15px;
+    gap: 10px;
+  }
+  .bookinglink .link-icon {
+    display: none;
+  }
+  .bookinglink .btn {
+    font-size: 11px;
+    padding: 7px 10px;
+    min-height: 34px;
+  }
+  .bottomnav {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    justify-content: space-around;
+    z-index: 40;
+    padding: 7px 4px max(7px, env(safe-area-inset-bottom));
+  }
+  .bottomnav a,
+  .bottomnav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: none;
+    border: 0;
+    color: var(--muted);
+    font-size: 9px;
+    padding: 4px 8px;
+    min-width: 50px;
+  }
+  .bottomnav .active {
+    color: var(--brand);
+  }
+  .bottomnav .icon {
+    width: 20px;
+    height: 20px;
+  }
+  .mobile-only {
+    display: inline-flex;
+  }
+  .desktop-only {
+    display: none !important;
+  }
+  .settings-layout {
+    grid-template-columns: 1fr;
+  }
+  .settings-nav {
+    display: flex;
+    overflow: auto;
+    white-space: nowrap;
+    font-size: 12px;
+  }
+  .settings-nav a {
+    padding: 7px 11px;
+  }
+  .toolbar {
+    padding: 14px;
+  }
+  .toolbar input {
+    max-width: 100%;
+  }
+  .toolbar .input {
+    min-height: 36px;
+    font-size: 12px;
+  }
+  .toolbar select {
+    flex: 1;
+  }
+  .calendar-toolbar {
+    padding: 14px;
+  }
+  .calendar-toolbar h2 {
+    font-size: 15px;
+  }
+  .cal-tip {
+    font-size: 10px;
+  }
+  .calendar-grid {
+    min-width: 650px;
+  }
+  .month-grid {
+    min-width: 630px;
+  }
+  .authpage {
+    grid-template-columns: 1fr;
+  }
+  .authaside {
+    padding: 24px;
+    min-height: 210px;
+  }
+  .authaside h2 {
+    font-size: 30px;
+    margin-top: 32px;
+  }
+  .authaside p,
+  .authaside > small {
+    display: none;
+  }
+  .authmain {
+    padding: 32px 24px;
+  }
+  .marketing-nav {
+    padding: 18px 20px;
+  }
+  .marketing-nav .row > a:not(.btn) {
+    display: none;
+  }
+  .marketing-nav .btn {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+  .marketing-nav .logo {
+    font-size: 19px;
+  }
+  .hero {
+    padding: 40px 24px 60px;
+    gap: 40px;
+  }
+  .hero h1 {
+    font-size: 48px;
+    letter-spacing: -2.5px;
+  }
+  .hero p {
+    font-size: 14px;
+  }
+  .hero-demo {
+    padding: 20px;
+    box-shadow: 10px 12px 0 var(--lime);
+  }
+  .marketing-section {
+    padding: 48px 24px;
+  }
+  .marketing-section > h2 {
+    font-size: 29px;
+  }
+  .marketing-section .grid3 {
+    grid-template-columns: 1fr;
+  }
+  .trustbar {
+    font-size: 13px;
+  }
+  .cta {
+    padding: 28px;
+    display: block;
+  }
+  .cta h2 {
+    font-size: 26px;
+  }
+  .cta .btn {
+    margin-top: 24px;
+  }
+  .public-page {
+    padding: 16px;
+    margin: 12px auto 80px;
+  }
+  .public-header h1 {
+    font-size: 27px;
+  }
+  .booking-options,
+  .booking-intro {
+    padding: 22px;
+  }
+  .booking-days {
+    gap: 6px;
+  }
+  .booking-day {
+    padding: 8px 10px;
+    min-width: 54px;
+  }
+  .slots {
+    gap: 7px;
+  }
+  .slot {
+    font-size: 11px;
+  }
+  .toast-region {
+    bottom: 82px;
+    right: 16px;
+  }
+  .modal-backdrop {
+    padding: 12px;
+  }
+  .modal {
+    max-height: 92vh;
+  }
+  .modal-body {
+    padding: 20px;
+  }
+  .modal .grid2 {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .footer-note {
+    gap: 16px;
+  }
+  .onboard {
+    margin: 24px 16px;
+    padding: 24px;
+  }
+  .screenhead .row {
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .price-card {
+    padding: 25px;
+  }
+  .bookinglink p {
+    max-width: 160px;
+  }
+}
+</style>
+</head>
+<body><a class="skip" href="#main">Skip to content</a><div id="app"></div><div id="modal-root"></div><div class="toast-region" id="toasts" aria-live="polite" aria-atomic="false"></div>
+<script>
+'use strict';
+// BookFlow is deliberately dependency-free. Domain logic, store, views and events
+// are kept separate below; every workspace owns its own records.
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const uid=()=>globalThis.crypto?.randomUUID?.()||'id-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+const icons={dashboard:'M3 3h7v7H3z M14 3h7v5h-7z M3 14h7v7H3z M14 12h7v9h-7z',calendar:'M4 5h16v16H4z M4 10h16 M8 3v4 M16 3v4',bookings:'M6 3h12v18H6z M9 8h6 M9 12h6 M9 16h4',clients:'M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2 M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M22 21v-2a4 4 0 0 0-3-3.87 M16 3.13a4 4 0 0 1 0 7.75',services:'M4 7l8-4 8 4-8 4z M4 12l8 4 8-4 M4 17l8 4 8-4',staff:'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8 M4 21v-2a8 6 0 0 1 16 0v2',link:'M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-2 2 M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l2-2',analytics:'M4 20h17 M7 16V9 M12 16V4 M17 16v-5',integrations:'M9 3v4 M15 3v4 M6 7h12v4a6 6 0 0 1-12 0z M12 17v4',settings:'M9 3h6l1 4 4 1v7l-4 1-1 5H9l-1-5-4-1V8l4-1z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6',audit:'M9 4H5v17h14V4h-4 M9 2h6v5H9z M9 12h6 M9 16h4',key:'M14 14a6 6 0 1 0-4-4L3 17v4h4v-3h3l4-4z M17 7h.01',search:'M21 21l-5-5 M10 3a7 7 0 1 0 0 14 7 7 0 0 0 0-14',bell:'M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9 M10 21h4',plus:'M12 5v14 M5 12h14',arrow:'M5 12h14 M14 7l5 5-5 5',chevron:'M9 5l7 7-7 7',down:'M6 9l6 6 6-6',close:'M6 6l12 12 M18 6L6 18',check:'M5 12l4 4L19 6',clock:'M12 8v5l3 2 M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20',money:'M12 2v20 M17 6H9a3 3 0 0 0 0 6h6a3 3 0 0 1 0 6H6',more:'M5 12h.01 M12 12h.01 M19 12h.01',sun:'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8 M12 2v2 M12 20v2 M2 12h2 M20 12h2 M5 5l1 1 M18 18l1 1 M5 19l1-1 M18 6l1-1',moon:'M20 14a8 8 0 0 1-10-10 9 9 0 1 0 10 10',logout:'M9 3H4v18h5 M9 12h12 M17 8l4 4-4 4',download:'M12 3v12 M7 10l5 5 5-5 M4 16v5h16v-5',copy:'M9 9h12v12H9z M5 15H3V3h12v2',external:'M14 3h7v7 M21 3L10 14 M10 3H3v18h18v-7',mail:'M3 5h18v14H3z M3 5l9 7 9-7',shield:'M12 2l9 4v6c0 6-9 10-9 10S3 18 3 12V6z M8 12l3 3 5-5',trash:'M3 6h18 M9 6V3h6v3 M6 6l1 15h10l1-15 M10 10v7 M14 10v7',edit:'M16 3l5 5-12 12-6 1 1-6z M13 6l5 5',menu:'M4 6h16 M4 12h16 M4 18h16',globe:'M2 12h20 M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20 M12 2c6 6 6 14 0 20 M12 2c-6 6-6 14 0 20',bolt:'M13 2L4 14h7l-1 8 10-12h-7z',move:'M12 2v20 M2 12h20 M9 5l3-3 3 3 M9 19l3 3 3-3 M5 9l-3 3 3 3 M19 9l3 3-3 3'};
+function icon(name){return `<svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="${icons[name]||icons.calendar}"/></svg>`}
+const logo=()=>`<a href="#landing" class="logo" aria-label="BookFlow home"><span class="mark" aria-hidden="true">bf</span><span class="logo-name">BookFlow<span style="color:var(--lime)">.</span></span></a>`;
+const zones=['Asia/Kolkata','America/New_York','America/Los_Angeles','Europe/London','Europe/Paris','Asia/Singapore','Australia/Sydney','UTC'];
+const localZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC'; if(!zones.includes(localZone))zones.unshift(localZone);
+const dateKey=(date=new Date(),zone=localZone)=>new Intl.DateTimeFormat('en-CA',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit'}).format(date);
+function parts(iso,zone){const f=new Intl.DateTimeFormat('en-GB',{timeZone:zone,year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date(iso));const p=Object.fromEntries(f.map(x=>[x.type,x.value]));return {date:`${p.year}-${p.month}-${p.day}`,time:`${p.hour}:${p.minute}`}}
+function wallISO(date,time,zone){const target=Date.parse(date+'T'+time+':00Z');let n=target;for(let i=0;i<4;i++){const p=parts(n,zone);const delta=target-Date.parse(p.date+'T'+p.time+':00Z');if(!delta)break;n+=delta}const p=parts(n,zone);if(p.date!==date||p.time!==time)throw Error('This local time does not exist because of daylight saving. Choose another time.');return new Date(n).toISOString()}
+function addDays(date,n){const d=new Date(date+'T12:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+function fmtDate(date,opts={month:'short',day:'numeric'}){return new Intl.DateTimeFormat('en-US',{...opts,timeZone:'UTC'}).format(new Date(date+'T12:00:00Z'))}
+function fmtTime(iso,zone=displayZone()){return new Intl.DateTimeFormat('en-US',{timeZone:zone,hour:'numeric',minute:'2-digit'}).format(new Date(iso))}
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n);
+const initials=name=>String(name).split(' ').filter(Boolean).slice(0,2).map(s=>s[0]).join('').toUpperCase();
+const plans={Free:{price:0,bookings:50,seats:1},Pro:{price:19,bookings:1000,seats:5},Business:{price:49,bookings:100000,seats:25}};
+function seedWorkspace(id,name,color,plan='Pro'){
+ const staff=[{id:id+'-s1',name:'Olivia Bennett',role:'Owner',email:'olivia@'+(id==='ws1'?'formstudio':'northstar')+'.example',start:'09:00',end:'18:00',days:[1,2,3,4,5]},{id:id+'-s2',name:'James Wilson',role:'Staff',email:'james@example.com',start:'09:00',end:'17:00',days:[1,2,3,4,5]},{id:id+'-s3',name:'Mia Chen',role:'Admin',email:'mia@example.com',start:'10:00',end:'18:00',days:[1,2,3,4,5]}];
+ const services=[{id:id+'-v1',name:'Discovery call',description:'A little conversation. A lot of possibility. Let’s find the right direction for you.',duration:30,price:0,buffer:15,color:'purple'},{id:id+'-v2',name:'Design consultation',description:'Dedicated time to work through your ideas with an expert.',duration:60,price:120,buffer:15,color:'green'},{id:id+'-v3',name:'Strategy session',description:'Get clarity, define your next steps, and leave with a plan.',duration:45,price:90,buffer:15,color:'blue'}];
+ const clients=['Alex Morgan','Sophie Williams','Daniel Park','Emma Davis','Noah Thompson','Isabella Rossi','Lucas Martin','Ava Patel'].map((name,i)=>({id:id+'-c'+i,name,email:name.toLowerCase().replaceAll(' ','.')+'@example.com',tags:i%3===0?['VIP']:i%2===0?['Returning']:['New'],notes:i===0?'Prefers morning appointments. Interested in a brand refresh.':''}));
+ const today=dateKey(new Date(),localZone);const bookings=[];
+ for(let d=-18;d<=9;d++){const day=addDays(today,d);if([0,6].includes(new Date(day+'T12:00Z').getUTCDay()))continue;[9,10,11,13,14,15].forEach((h,j)=>{if(d!==0&&(j+d+40)%3===0)return;const st=staff[j%3];const svc=services[j%3];const start=wallISO(day,`${String(h).padStart(2,'0')}:${j===1?'30':'00'}`,localZone);bookings.push({id:uid(),clientId:clients[(j+d+80)%8].id,serviceId:svc.id,staffId:st.id,start,duration:svc.duration,price:svc.price,status:d<0?((j+d+50)%13===0?'no-show':'completed'):j===4?'pending':'confirmed',recurring:false,notes:''})})}
+ return {id,name,color,slug:name.toLowerCase().replaceAll(' ','-'),plan,timezone:localZone,hours:{start:'09:00',end:'18:00',days:[1,2,3,4,5]},staff,services,clients,bookings,waitlist:[],invites:[],keys:[],integrations:{google:false,zoom:false,stripe:false},notifications:{email:true,reminders:true,digest:false},activity:[{id:uid(),text:'Alex Morgan booked a design consultation',time:Date.now()-8*60000},{id:uid(),text:'James Wilson joined your workspace',time:Date.now()-37*60000},{id:uid(),text:'Your booking page is ready to share',time:Date.now()-70*60000}],audit:[]};
+}
+function seed(){return {version:1,active:'ws1',role:'Owner',theme:'light',collapsed:false,profile:{name:'Olivia Bennett',email:'olivia@formstudio.example'},workspaces:[seedWorkspace('ws1','Form Studio','#4c7962'),seedWorkspace('ws2','Northstar Co.','#6d63a2','Business')]}}
+let storageFailed=false;
+const Store={key:'bookflow.demo.v1',state:null,load(){try{const s=JSON.parse(localStorage.getItem(this.key));this.state=s?.version===1&&Array.isArray(s.workspaces)&&s.workspaces.length&&s.workspaces.every(w=>Array.isArray(w.bookings)&&Array.isArray(w.services)&&Array.isArray(w.staff)&&Array.isArray(w.clients))?s:seed()}catch(e){this.state=seed();storageFailed=true}},save(){try{localStorage.setItem(this.key,JSON.stringify(this.state))}catch(e){if(!storageFailed){storageFailed=true;toast('Storage is unavailable. Changes will last for this session only.')}}},update(fn){fn(this.state);this.save()}};
+Store.load();
+const ws=()=>Store.state.workspaces.find(w=>w.id===Store.state.active)||Store.state.workspaces[0];
+const role=()=>Store.state.role; const admin=()=>['Owner','Admin'].includes(role());const owner=()=>role()==='Owner';
+const me=()=>role()==='Staff'?ws().staff.find(s=>s.role==='Staff')||ws().staff[0]:ws().staff[0];
+const myClient=()=>ws().clients[0];const displayZone=()=>UI.zone||ws().timezone;
+const service=id=>ws().services.find(s=>s.id===id)||{name:'Archived service',duration:30,price:0,buffer:0,color:'green'};
+const client=id=>ws().clients.find(c=>c.id===id)||{name:'Deleted client',email:'',tags:[],notes:''};
+const staff=id=>ws().staff.find(s=>s.id===id)||{name:'Former teammate'};
+const visibleBookings=()=>ws().bookings.filter(b=>role()==='Staff'?b.staffId===me()?.id:role()==='Client'?b.clientId===myClient()?.id:true);
+const canEdit=b=>admin()||(role()==='Staff'&&b.staffId===me()?.id)||(role()==='Client'&&b.clientId===myClient()?.id);
+const UI={zone:'',calDate:dateKey(),calView:'week',filter:'all',query:'',staffFilter:'all',selected:new Set(),dashTab:'all',setting:'profile',publicDate:addDays(dateKey(),1),publicService:'',publicStaff:'',publicTime:'',publicZone:localZone,publicWorkspace:null,onboardStep:1,draft:{},undo:null,search:'',modalFocus:null,loaded:new Set()};
+function log(text){const w=ws();w.activity.unshift({id:uid(),text,time:Date.now()});w.activity=w.activity.slice(0,25);w.audit.unshift({id:uid(),text,actor:role()==='Client'?myClient()?.name:Store.state.profile.name,role:role(),time:Date.now()});w.audit=w.audit.slice(0,100)}
+function toast(message,action,handler){const div=document.createElement('div');div.className='toast';div.innerHTML=icon('check')+`<span>${esc(message)}</span>`+(action?`<button type="button">${esc(action)}</button>`:'');if(handler)$('button',div).onclick=()=>{handler();div.remove()};$('#toasts').append(div);setTimeout(()=>div.remove(),action?10000:4500)}
+function persist(message){Store.save();if(message)toast(message)}
+function route(){return location.hash.slice(1).split('?')[0]||'dashboard'}
+function go(path){if(location.hash==='#'+path)render();else location.hash=path}
+function badge(status){return `<span class="tag ${esc(status)}"><span class="badge-dot"></span>${esc(status[0].toUpperCase()+status.slice(1))}</span>`}
+const avatar=(name,color='')=>`<span class="avatar ${color}" aria-hidden="true">${esc(initials(name))}</span>`;
+const btn=(text,action,kind='',ic='')=>`<button class="btn ${kind}" data-action="${action}">${ic?icon(ic):''}${text}</button>`;
+function heading(title,description,actions=''){return `<div class="screenhead"><div><h1>${title}</h1><p>${description}</p></div><div class="row">${actions}</div></div>`}
+function empty(title,text,action=''){return `<div class="empty">${icon('calendar')}<h3>${title}</h3><p>${text}</p>${action?`<div style="margin-top:20px">${action}</div>`:''}</div>`}
+function field(label,name,type='text',value='',extra=''){return `<div class="field"><label for="f-${name}">${label}</label><input id="f-${name}" name="${name}" type="${type}" value="${esc(value)}" ${extra}></div>`}
+function selectField(label,name,options,value,extra=''){return `<div class="field"><label for="f-${name}">${label}</label><select id="f-${name}" name="${name}" ${extra}>${options.map(o=>{const v=typeof o==='string'?o:o.value;return `<option value="${esc(v)}" ${String(v)===String(value)?'selected':''}>${esc(typeof o==='string'?o:o.label)}</option>`}).join('')}</select></div>`}
+function zoneSelect(name,value=displayZone()){return selectField('Timezone',name,zones,value)}
+function allowed(screen){if(['landing','login','signup','forgot','onboarding','pricing','public'].includes(screen))return true;if(role()==='Client')return ['dashboard','bookings','booking-page','settings'].includes(screen);if(role()==='Staff')return !['analytics','integrations','audit','api'].includes(screen);return true}
+const navItems=[['dashboard','Overview','dashboard'],['calendar','Calendar','calendar'],['bookings','Bookings','bookings'],['clients','Clients','clients'],['services','Services','services'],['staff','Team members','staff'],['booking-page','Booking page','link'],['analytics','Analytics','analytics'],['integrations','Integrations','integrations']];
+function shell(content){const current=route();const w=ws();const activeThisMonth=w.bookings.filter(b=>parts(b.start,w.timezone).date.slice(0,7)===dateKey(new Date(),w.timezone).slice(0,7)&&b.status!=='cancelled').length;return `<div class="${Store.state.collapsed?'collapsed':''}"><aside class="sidebar" aria-label="Main navigation">${logo()}<nav class="sidenav">${navItems.filter(n=>allowed(n[0])).map(([id,label,ic])=>`<a class="navitem ${current===id?'active':''}" href="#${id}" ${current===id?'aria-current="page"':''} title="${label}">${icon(ic)}<span class="navlabel">${label}</span>${id==='bookings'?`<span class="count">${visibleBookings().filter(b=>b.status==='pending').length}</span>`:''}</a>`).join('')}</nav><div class="sidegroup">Workspace</div><nav class="sidenav"><a href="#settings" class="navitem ${current==='settings'?'active':''}">${icon('settings')}<span class="navlabel">Settings</span></a>${admin()?`<a href="#audit" class="navitem ${current==='audit'?'active':''}">${icon('audit')}<span class="navlabel">Audit log</span></a><a href="#api" class="navitem ${current==='api'?'active':''}">${icon('key')}<span class="navlabel">Developer API</span><span class="count">B</span></a>`:''}</nav><div class="sidebottom"><div class="planbox"><div class="row between"><strong style="color:white">${w.plan} workspace</strong><span>✧</span></div><div class="subtext" style="color:#9eb2a6">${activeThisMonth} / ${w.plan==='Business'?'∞':plans[w.plan].bookings} monthly bookings</div><div class="progress"><span style="width:${Math.min(100,activeThisMonth/plans[w.plan].bookings*100)}%"></span></div><button class="link" data-action="billing">${w.plan==='Business'?'Manage plan':'Explore plans'} →</button></div><button class="sideprofile" style="background:none;border-left:0;border-right:0;border-bottom:0;width:100%;text-align:left" data-action="profile">${avatar(Store.state.profile.name,'gold')}<span><strong>${esc(Store.state.profile.name)}</strong><span class="subtext" style="display:block">${role()} · ${esc(w.name)}</span></span>${icon('down')}</button></div></aside><div class="appmain"><header class="topbar"><div class="row"><button class="iconbtn desktop-only" data-action="collapse" aria-label="Toggle sidebar">${icon('menu')}</button><div class="workspace-select"><span class="workspace-icon">${esc(initials(w.name))}</span><label class="visually-hidden" for="workspace">Workspace</label><select id="workspace" data-change="workspace">${Store.state.workspaces.map(x=>`<option value="${x.id}" ${x.id===w.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select></div></div><div class="topright"><button class="search-trigger" data-action="command" aria-label="Search BookFlow">${icon('search')}<span>Search anything...</span><kbd>⌘ K</kbd></button><button class="iconbtn" data-action="theme" aria-label="Switch to ${Store.state.theme==='light'?'dark':'light'} mode">${icon(Store.state.theme==='light'?'sun':'moon')}</button><button class="iconbtn bell" data-action="notifications" aria-label="Notifications">${icon('bell')}</button><button class="iconbtn" data-action="profile" aria-label="Profile and demo role">${avatar(Store.state.profile.name,'gold')}</button></div></header><main class="content" id="main" tabindex="-1"><div class="breadcrumb">Workspace ${icon('chevron')} <span>${esc(navItems.find(n=>n[0]===current)?.[1]||current[0].toUpperCase()+current.slice(1))}</span></div>${content}<footer class="footer-note"><span>Made for your time. Built for your business.</span><span>BookFlow demo · ${esc(role())}</span></footer></main></div><nav class="bottomnav" aria-label="Mobile navigation">${[['dashboard','Home','dashboard'],['calendar','Calendar','calendar'],['bookings','Bookings','bookings'],['booking-page','Share','link']].filter(n=>allowed(n[0])).map(([id,t,ic])=>`<a href="#${id}" class="${current===id?'active':''}" ${current===id?'aria-current="page"':''}>${icon(ic)}${t}</a>`).join('')}<button data-action="mobile-menu">${icon('menu')}More</button></nav></div>`}
+function dashboard(){const w=ws(),today=dateKey(new Date(),displayZone());const all=visibleBookings();const todays=all.filter(b=>parts(b.start,displayZone()).date===today&&b.status!=='cancelled').sort((a,b)=>a.start.localeCompare(b.start));const month=all.filter(b=>parts(b.start,displayZone()).date.slice(0,7)===today.slice(0,7));const revenue=month.filter(b=>b.status==='completed').reduce((n,b)=>n+b.price,0);const noShows=month.filter(b=>b.status==='no-show').length;const metrics=[['Today’s appointments',todays.length,'calendar',`${todays.filter(b=>b.status==='confirmed').length} confirmed`],['Revenue this month',money(revenue),'money','From completed appointments'],['Active clients',new Set(month.filter(b=>b.status!=='cancelled').map(b=>b.clientId)).size,'clients','Clients booked this month'],['Attendance rate',month.filter(b=>['completed','no-show'].includes(b.status)).length?Math.round((1-noShows/month.filter(b=>['completed','no-show'].includes(b.status)).length)*100)+'%':'—','analytics','Completed vs. no-show']];return heading(role()==='Client'?'Your appointments':'Overview','A little clarity for your day ahead.',`<span class="datebadge">${icon('calendar')}${fmtDate(today,{weekday:'short',month:'short',day:'numeric',year:'numeric'})}</span>${btn('New booking','new-booking','primary','plus')}`)+`<div class="welcome"><div class="welcome-art" aria-hidden="true"></div><h2>Good ${new Date().getHours()<12?'morning':new Date().getHours()<17?'afternoon':'evening'}, ${esc((role()==='Client'?myClient()?.name:Store.state.profile.name).split(' ')[0])} <span style="font-size:20px">☀</span></h2><p>You have <strong>${todays.length} appointments</strong> today. Let’s make every one count.</p></div><div class="metrics">${metrics.filter((m,i)=>role()!=='Client'||[0,3].includes(i)).map(([label,value,ic,sub],i)=>`<article class="metric"><div class="metric-label">${label}${icon(ic)}</div><div class="metric-value">${value}</div><div class="metric-bottom"><strong>${sub}</strong><svg class="spark" viewBox="0 0 65 24" aria-hidden="true"><path d="M1 21l7-6 5 2 7-9 6 5 6-7 6 3 7-6 6 3 7-5 6 3"/></svg></div></article>`).join('')}</div><div class="dashgrid"><section class="panel"><div class="panelhead"><div class="row"><h2>Today’s schedule</h2><span class="tag">${todays.length} appointments</span></div><a class="link small" href="#calendar">View calendar ↗</a></div><div class="schedule-tabs"><div class="pillgroup" role="tablist" aria-label="Today's appointments">${['all','confirmed','pending'].map(t=>`<button role="tab" aria-selected="${UI.dashTab===t}" data-action="dash-tab" data-id="${t}">${t==='all'?'All appointments':t[0].toUpperCase()+t.slice(1)}</button>`).join('')}</div></div>${todays.filter(b=>UI.dashTab==='all'||b.status===UI.dashTab).map(b=>`<div class="schedule-row" role="button" tabindex="0" data-action="booking-detail" data-id="${b.id}" aria-label="${esc(client(b.clientId).name)}, ${fmtTime(b.start)}"><div class="schedule-time">${fmtTime(b.start).split(' ')[0]}<small>${fmtTime(b.start).split(' ')[1]} · ${b.duration} min</small></div><div class="schedule-line" style="background:${service(b.serviceId).color==='green'?'#7d9f85':service(b.serviceId).color==='blue'?'#7c9fb6':'#a092cf'}"></div><div style="min-width:0"><div class="schedule-title">${esc(client(b.clientId).name)}</div><div class="schedule-meta">${esc(service(b.serviceId).name)} · ${esc(staff(b.staffId).name.split(' ')[0])}</div></div>${badge(b.status)}</div>`).join('')||empty('A little breathing room','No appointments in this view.',btn('Create a booking','new-booking','sm'))}<div class="tablefoot"><span>${esc(displayZone().replaceAll('_',' '))}</span><span>${todays.reduce((n,b)=>n+b.duration,0)} minutes of connection</span></div></section><div class="dash-side"><section class="panel pad" style="margin-bottom:24px"><h2>Make it happen</h2><p class="subtext">Your everyday shortcuts.</p><div class="quicklinks"><button class="quicklink" data-action="new-booking">${icon('plus')}New booking</button><button class="quicklink" data-action="${admin()?'invite':'open-public'}">${icon(admin()?'staff':'globe')}${admin()?'Invite a teammate':'Book a time'}</button><button class="quicklink" data-action="copy-link">${icon('link')}Copy booking link</button><a class="quicklink" href="#${admin()?'analytics':'bookings'}">${icon('analytics')}${admin()?'View reports':'My appointments'}</a></div></section><section class="panel"><div class="panelhead"><h2>Recent activity</h2><span class="tag"><span class="badge-dot" style="color:#588866"></span>Live demo</span></div><div style="padding:0 20px">${activityList(w.activity.slice(0,3))}</div><div style="padding:10px 20px 16px">${btn('Simulate incoming booking','simulate','sm','bolt')}</div></section></div></div><section class="bookinglink"><div class="link-icon">${icon('globe')}</div><div class="grow"><h3>Your next great connection starts here.</h3><p>${esc(w.name)} · ${w.services.length} bookable services</p></div>${btn('Preview booking page','open-public','','external')}${btn('Copy link','copy-link','sm desktop-only','copy')}</section>`}
+function activityList(list){return list.length?list.map(a=>`<div class="activity-item"><span class="activity-dot">${icon('calendar')}</span><div><p>${esc(a.text)}</p><small>${relative(a.time)}</small></div></div>`).join(''):empty('All caught up','New activity will appear here.')}
+function relative(time){let n=Math.max(0,Math.floor((Date.now()-time)/60000));return n<1?'Just now':n<60?`${n} min ago`:n<1440?`${Math.floor(n/60)} hours ago`:`${Math.floor(n/1440)} days ago`}
+function bookings(){let list=visibleBookings().filter(b=>(UI.filter==='all'||b.status===UI.filter)&&(UI.staffFilter==='all'||b.staffId===UI.staffFilter)&&[client(b.clientId).name,client(b.clientId).email,service(b.serviceId).name].join(' ').toLowerCase().includes(UI.query.toLowerCase())).sort((a,b)=>b.start.localeCompare(a.start));return heading(role()==='Client'?'My bookings':'Bookings','Every appointment, in one place.',btn('New booking','new-booking','primary','plus'))+`<section class="panel"><div class="toolbar"><label class="visually-hidden" for="booking-search">Search bookings</label><input class="input" id="booking-search" placeholder="Search clients or services…" value="${esc(UI.query)}" data-input="booking-search"><label class="visually-hidden" for="status-filter">Filter status</label><select class="input" id="status-filter" data-change="status-filter">${['all','confirmed','pending','completed','no-show','cancelled'].map(s=>`<option ${s===UI.filter?'selected':''} value="${s}">${s==='all'?'All statuses':s[0].toUpperCase()+s.slice(1)}</option>`).join('')}</select>${role()!=='Client'?`<label class="visually-hidden" for="staff-filter">Filter staff</label><select id="staff-filter" class="input" data-change="staff-filter"><option value="all">All team members</option>${ws().staff.filter(s=>role()!=='Staff'||s.id===me()?.id).map(s=>`<option value="${s.id}" ${s.id===UI.staffFilter?'selected':''}>${esc(s.name)}</option>`).join('')}</select>`:''}<span style="flex:1"></span>${btn('Export CSV','export','','download')}</div>${UI.selected.size?`<div class="toolbar" style="background:var(--surface2);border-top:1px solid var(--line)"><strong class="small">${UI.selected.size} selected</strong>${btn('Confirm selected','bulk-confirm','sm')}${btn('Cancel selected','bulk-cancel','sm')}${btn('Delete','bulk-delete','sm danger','trash')}</div>`:''}${list.length?`<div class="tablewrap"><table><thead><tr><th><input type="checkbox" aria-label="Select all filtered bookings" data-change="select-all" ${list.every(b=>UI.selected.has(b.id))?'checked':''}></th><th>Client</th><th>Service</th><th>Date & time</th><th>Team member</th><th>Status</th><th>Amount</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>${list.map(b=>`<tr><td><input type="checkbox" aria-label="Select booking for ${esc(client(b.clientId).name)}" data-change="select-booking" value="${b.id}" ${UI.selected.has(b.id)?'checked':''}></td><td><div class="row">${avatar(client(b.clientId).name,service(b.serviceId).color==='green'?'green':'')}<div><strong>${esc(client(b.clientId).name)}</strong><div class="subtext">${esc(client(b.clientId).email)}</div></div></div></td><td>${esc(service(b.serviceId).name)}${b.recurring?'<span title="Recurring booking"> ↻</span>':''}<div class="subtext">${b.duration} minutes</div></td><td>${fmtDate(parts(b.start,displayZone()).date)}<div class="subtext">${fmtTime(b.start)}</div></td><td>${esc(staff(b.staffId).name)}</td><td>${badge(b.status)}</td><td>${money(b.price)}</td><td><button class="iconbtn" aria-label="Open appointment details" data-action="booking-detail" data-id="${b.id}">${icon('more')}</button></td></tr>`).join('')}</tbody></table></div>`:empty('No bookings found','Try another filter or create your first appointment.',btn('New booking','new-booking','primary','plus'))}<div class="tablefoot"><span>${list.length} booking${list.length===1?'':'s'} · ${esc(displayZone())}</span><span>${ws().waitlist.length} on waitlist <button class="link" data-action="waitlist">View →</button></span></div></section>`}
+function calendar(){const zone=displayZone(),date=UI.calDate;const d=new Date(date+'T12:00Z');const weekday=(d.getUTCDay()+6)%7;let days=UI.calView==='day'?[date]:Array.from({length:7},(_,i)=>addDays(date,i-weekday));const today=dateKey(new Date(),zone);let grid='';const list=visibleBookings().filter(b=>b.status!=='cancelled');if(UI.calView==='month'){const start=date.slice(0,8)+'01';const offset=(new Date(start+'T12:00Z').getUTCDay()+6)%7;const monthDays=Array.from({length:42},(_,i)=>addDays(start,i-offset));grid=`<div class="month-grid" role="grid" aria-label="Monthly calendar">${['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(s=>`<div class="cal-heading" role="columnheader">${s}</div>`).join('')}${monthDays.map(day=>`<div class="month-cell ${day.slice(0,7)!==date.slice(0,7)?'outside':''} ${day===today?'today':''}" role="gridcell" aria-label="${fmtDate(day,{month:'long',day:'numeric'})}" data-drop-date="${day}" data-drop-time="09:00"><button data-action="calendar-day" data-id="${day}">${Number(day.slice(8))}</button>${list.filter(b=>parts(b.start,zone).date===day).map(eventHTML).join('')}</div>`).join('')}</div>`}else{const hours=Array.from({length:12},(_,i)=>8+i);grid=`<div class="calendar-grid ${UI.calView==='day'?'day':''}" role="grid" aria-label="${UI.calView} calendar" style="grid-template-columns:55px repeat(${days.length},minmax(0,1fr))"><div class="cal-heading" role="columnheader">${zone==='UTC'?'UTC':'Time'}</div>${days.map(day=>`<div class="cal-heading ${day===today?'today':''}" role="columnheader">${fmtDate(day,{weekday:'short'})}<strong>${Number(day.slice(8))}</strong></div>`).join('')}${hours.map(h=>`<div class="time-label" role="rowheader">${h>12?h-12:h}${h>=12?' pm':' am'}</div>${days.map(day=>{const time=String(h).padStart(2,'0')+':00';return `<div class="cal-cell ${day<today?'past':''}" role="gridcell" tabindex="0" aria-label="${fmtDate(day)} ${time}. Enter to book." data-drop-date="${day}" data-drop-time="${time}" data-action="slot-book" data-date="${day}" data-time="${time}">${list.filter(b=>{const p=parts(b.start,zone);return p.date===day&&Number(p.time.slice(0,2))===h}).map(eventHTML).join('')}</div>`}).join('')}`).join('')}</div>`}return heading('Calendar','A little structure. A lot more flow.',btn('New booking','new-booking','primary','plus'))+`<section class="panel"><div class="calendar-toolbar"><div class="row"><div class="row" style="gap:2px"><button class="iconbtn" data-action="cal-prev" aria-label="Previous ${UI.calView}"><span style="transform:rotate(180deg);display:flex">${icon('chevron')}</span></button><button class="iconbtn" data-action="cal-next" aria-label="Next ${UI.calView}">${icon('chevron')}</button></div><h2>${UI.calView==='week'?`${fmtDate(days[0])} – ${fmtDate(days[6],{month:'short',day:'numeric',year:'numeric'})}`:fmtDate(date,{month:'long',...(UI.calView==='day'?{day:'numeric'}:{}),year:'numeric'})}</h2>${btn('Today','cal-today','sm')}</div><div class="row wrap"><label class="visually-hidden" for="cal-zone">Display timezone</label><select id="cal-zone" data-change="cal-zone" class="input" style="font-size:11px;width:155px;min-height:33px;padding:5px">${zones.map(z=>`<option ${z===zone?'selected':''}>${esc(z)}</option>`).join('')}</select><div class="pillgroup" role="tablist" aria-label="Calendar view">${['day','week','month'].map(v=>`<button role="tab" aria-selected="${UI.calView===v}" data-action="cal-view" data-id="${v}">${v[0].toUpperCase()+v.slice(1)}</button>`).join('')}</div></div></div><div class="calendar-scroll">${grid}</div><div class="cal-tip">${icon('move')}Drag an appointment into a new time. We’ll check availability before moving it. On touch or keyboard, open an appointment and choose Reschedule.</div></section>`}
+function eventHTML(b){return `<button class="cal-event ${esc(service(b.serviceId).color)}" draggable="${canEdit(b)&&role()!=='Client'}" data-drag-id="${b.id}" data-action="booking-detail" data-id="${b.id}" aria-label="${esc(client(b.clientId).name)}, ${esc(service(b.serviceId).name)}, ${fmtTime(b.start)}"><strong>${esc(client(b.clientId).name)}</strong><span>${fmtTime(b.start)} · ${b.duration}m</span><span>${esc(service(b.serviceId).name)}</span></button>`}
+function clientsPage(){const list=ws().clients.filter(c=>(c.name+' '+c.email+' '+c.tags.join(' ')).toLowerCase().includes(UI.query.toLowerCase()));return heading('Clients','Good relationships start with remembering the details.',role()==='Client'?'':btn('Add client','add-client','primary','plus'))+`<section class="panel"><div class="toolbar"><label class="visually-hidden" for="client-search">Search clients</label><input id="client-search" class="input" data-input="client-search" placeholder="Search names, email or tags…" value="${esc(UI.query)}"><span class="muted small">${list.length} clients</span></div>${list.length?`<div class="tablewrap"><table><thead><tr><th>Client</th><th>Tags</th><th>Appointments</th><th>Lifetime value</th><th>Last appointment</th><th></th></tr></thead><tbody>${list.map(c=>{const bs=ws().bookings.filter(b=>b.clientId===c.id).sort((a,b)=>b.start.localeCompare(a.start));return `<tr><td><div class="row">${avatar(c.name)}<div><strong>${esc(c.name)}</strong><div class="subtext">${esc(c.email)}</div></div></div></td><td>${c.tags.map(t=>`<span class="tag ${t==='VIP'?'purple':''}">${esc(t)}</span>`).join(' ')}</td><td>${bs.filter(b=>b.status!=='cancelled').length}</td><td>${money(bs.filter(b=>b.status==='completed').reduce((n,b)=>n+b.price,0))}</td><td>${bs[0]?fmtDate(parts(bs[0].start,displayZone()).date):'—'}</td><td><button class="btn sm" data-action="client-detail" data-id="${c.id}">View profile</button></td></tr>`}).join('')}</tbody></table></div>`:empty('No clients yet','Your next connection is a booking away.',btn('Add client','add-client','primary'))}</section>`}
+function servicesPage(){return heading('Services','Shape the time you share with your clients.',admin()?btn('Add service','add-service','primary','plus'):'')+`<div class="grid3">${ws().services.map(s=>`<article class="panel service-card"><div class="service-band" style="background:${s.color==='purple'?'#9a87c4':s.color==='blue'?'#7a9eb7':'#80a18a'}"></div><div class="pad"><span class="service-icon">${icon('services')}</span><h2>${esc(s.name)}</h2><p class="muted small" style="min-height:54px">${esc(s.description)}</p><div class="service-detail"><span class="muted">Duration</span><strong>${s.duration} minutes</strong></div><div class="service-detail"><span class="muted">Price</span><strong>${s.price?money(s.price):'Complimentary'}</strong></div><div class="service-detail"><span class="muted">Buffer after</span><strong>${s.buffer} minutes</strong></div>${admin()?`<button class="btn" data-action="edit-service" data-id="${s.id}">${icon('edit')}Edit service</button>`:btn('Book this service','open-public','','arrow')}</div></article>`).join('')||empty('Create your first service','Give your clients something great to book.',btn('Add service','add-service','primary'))}</div>`}
+function staffPage(){return heading('Your team','Great work happens together.',admin()?btn('Invite teammate','invite','primary','plus'):'')+`<div class="grid3">${ws().staff.map((s,i)=>`<article class="panel staff-card">${avatar(s.name,['gold','green','blue'][i%3])}<h2>${esc(s.name)}</h2><p class="subtext">${esc(s.email)}</p><span class="tag ${s.role==='Owner'?'purple':''}">${esc(s.role)}</span><div class="divider" style="margin:10px 0"></div><div class="row between small"><span class="muted">Working hours</span><span>${s.start} – ${s.end}</span></div><p class="subtext" style="margin-top:10px">${s.days.map(d=>['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d]).join(' · ')}</p>${admin()||s.id===me()?.id?`<button class="btn" data-action="staff-availability" data-id="${s.id}">${icon('calendar')}Edit availability</button>`:''}</article>`).join('')}</div>${ws().invites.length?`<section class="panel" style="margin-top:24px"><div class="panelhead"><h2>Pending invitations</h2><span class="tag">Simulated</span></div><div class="pad stack">${ws().invites.map(i=>`<div class="row between wrap"><div><strong>${esc(i.email)}</strong><p class="subtext">${esc(i.role)} · Invite prepared, no email sent</p></div><button class="btn sm danger" data-action="revoke-invite" data-id="${i.id}">Revoke</button></div>`).join('')}</div></section>`:''}`}
+function analytics(){if(ws().plan==='Free')return upgradeScreen('See the bigger picture','Revenue trends, attendance and your busiest hours. Available on Pro and Business.');const bs=visibleBookings().filter(b=>b.status==='completed');const today=dateKey(new Date(),ws().timezone),total=bs.reduce((n,b)=>n+b.price,0);const all=visibleBookings().filter(b=>['completed','no-show'].includes(b.status));const nos=all.filter(b=>b.status==='no-show').length;const bars=Array.from({length:7},(_,i)=>{const date=addDays(today,i-6);return {date,value:bs.filter(b=>parts(b.start,ws().timezone).date===date).reduce((n,b)=>n+b.price,0)}});const max=Math.max(1,...bars.map(b=>b.value));const heat=Array.from({length:5},(_,d)=>Array.from({length:9},(_,h)=>ws().bookings.filter(b=>b.status!=='cancelled'&&new Date(parts(b.start,ws().timezone).date+'T12:00Z').getUTCDay()===d+1&&Number(parts(b.start,ws().timezone).time.slice(0,2))===h+9).length));const hmax=Math.max(1,...heat.flat());return heading('Analytics','Less guesswork. More perspective.',`<span class="datebadge">${icon('calendar')}Demo history · ${esc(ws().timezone)}</span>${btn('Export data','export','','download')}`)+`<div class="metrics">${[['Total revenue',money(total)],['Completed appointments',bs.length],['No-show rate',all.length?Math.round(nos/all.length*100)+'%':'—'],['Average booking',bs.length?money(total/bs.length):'—']].map(([t,v])=>`<div class="metric"><div class="metric-label">${t}${icon('analytics')}</div><div class="metric-value">${v}</div><p class="subtext">Based on this workspace’s records</p></div>`).join('')}</div><div class="grid2"><section class="panel pad"><h2>Revenue over time</h2><p class="subtext">Completed bookings · last 7 days</p><div class="chart" role="img" aria-label="Revenue: ${bars.map(b=>fmtDate(b.date)+' '+money(b.value)).join(', ')}">${bars.map(b=>`<div class="chart-col"><small>${money(b.value)}</small><i style="height:${Math.max(1,b.value/max*80)}%"></i><span>${fmtDate(b.date,{weekday:'short'})}</span></div>`).join('')}</div></section><section class="panel pad"><h2>Your busiest hours</h2><p class="subtext">All active bookings · workspace time</p><div class="heatmap" role="img" aria-label="Appointment counts by weekday and hour; darker cells mean busier"><span></span>${Array.from({length:9},(_,i)=>`<span>${i+9>12?i-3:i+9}</span>`).join('')}${heat.map((day,i)=>`<span>${['Mon','Tue','Wed','Thu','Fri'][i]}</span>${day.map((v,h)=>`<i style="opacity:${.08+v/hmax*.92}" title="${['Monday','Tuesday','Wednesday','Thursday','Friday'][i]} ${h+9}:00: ${v} bookings"></i>`).join('')}`).join('')}</div><div class="row" style="justify-content:flex-end;margin-top:16px;font-size:10px;color:var(--muted)">Less <span style="width:40px;height:7px;background:linear-gradient(90deg,var(--line),var(--brand));border-radius:3px"></span> More</div></section></div><section class="panel" style="margin-top:24px"><div class="panelhead"><h2>Service performance</h2></div><div class="tablewrap"><table><thead><tr><th>Service</th><th>Completed</th><th>Revenue</th><th>Share of revenue</th></tr></thead><tbody>${ws().services.map(s=>{const records=bs.filter(b=>b.serviceId===s.id),rev=records.reduce((n,b)=>n+b.price,0);return `<tr><td>${esc(s.name)}</td><td>${records.length}</td><td>${money(rev)}</td><td>${total?Math.round(rev/total*100):0}%</td></tr>`}).join('')}</tbody></table></div></section>`}
+function integrations(){return heading('A well-connected workspace','Your favorite tools, working in the same rhythm.')+`<div class="grid3">${[['google','Google Calendar','Keep your schedule in sync. Simulated two-way calendar connection.','calendar'],['zoom','Zoom','A place to meet, automatically. Simulated meeting links for your bookings.','globe'],['stripe','Stripe','Make getting paid part of the flow. Simulated payment connection.','money']].map(([id,name,desc,ic])=>`<article class="panel pad"><div class="row between"><span class="service-icon">${icon(ic)}</span><span class="tag ${ws().integrations[id]?'confirmed':''}">${ws().integrations[id]?'Connected':'Not connected'}</span></div><h2 style="margin:20px 0 10px">${name}</h2><p class="muted small" style="min-height:60px">${desc}</p><div class="divider"></div><div class="row between"><span class="small">Demo connection ${ws().plan==='Free'?'· Pro':''}</span><button class="switch" role="switch" aria-label="Connect ${name}" aria-checked="${!!ws().integrations[id]}" data-action="integration" data-id="${id}"></button></div></article>`).join('')}</div><p class="help" style="margin-top:20px">These switches save simulated connection states. No external account is accessed and no payments are processed.</p>`}
+function pricing(marketing=false){return `${marketing?'':heading('A plan for your next chapter','Start small. Make room to grow. All prices are simulated.')}<div class="grid3">${Object.entries(plans).map(([name,p])=>`<article class="price-card ${name==='Pro'?'featured':''}">${name==='Pro'?'<span class="popular">The sweet spot</span>':''}<h2>${name}</h2><p class="subtext">${name==='Free'?'For your first great connections.':name==='Pro'?'For a business finding its rhythm.':'For teams with bigger possibilities.'}</p><div class="price">$${p.price}<small> / workspace / month</small></div><p class="help">No card needed in this demo</p><ul><li>${name==='Business'?'Unlimited':p.bookings.toLocaleString()} bookings per month</li><li>${p.seats} team seat${p.seats>1?'s':''}</li><li>Branded booking page</li><li>${name==='Free'?'Core scheduling & client records':'Recurring bookings & analytics'}</li><li>${name==='Business'?'Developer API & audit log':name==='Pro'?'Calendar, Zoom & Stripe integrations':'CSV export & timezone support'}</li></ul>${marketing?`<a class="btn ${name==='Pro'?'primary':''}" href="#signup">Get started ${icon('arrow')}</a>`:`<button class="btn ${name==='Pro'?'primary':''}" data-action="choose-plan" data-id="${name}" ${ws().plan===name?'disabled':''}>${ws().plan===name?'Current plan':'Choose '+name}</button>`}</article>`).join('')}</div>`}
+function upgradeScreen(title,desc){return `<section class="panel restricted"><span class="service-icon" style="margin:0 auto 20px">${icon('bolt')}</span><h1>${title}</h1><p class="muted" style="margin:16px 0 24px">${desc}</p>${btn('Explore plans','upgrade','primary','arrow')}</section>`}
+function settings(){const tab=UI.setting;const tabs=[['profile','My profile'],...(admin()?[['workspace','Workspace']]:[]),['notifications','Notifications'],...(owner()?[['billing','Plans & billing'],['danger','Danger zone']]:[])];let content='';if(tab==='profile')content=`<form data-form="profile">${field('Full name','name','text',Store.state.profile.name,'required maxlength="80"')}${field('Email address','email','email',Store.state.profile.email,'required maxlength="160"')}<p class="help">Demo identity · use the profile menu to try another role.</p><div style="margin-top:20px"><button class="btn primary">Save profile</button></div></form>`;
+else if(tab==='workspace')content=`<form data-form="workspace">${field('Workspace name','name','text',ws().name,'required maxlength="80"')}${field('Logo color','color','color',ws().color)}${zoneSelect('timezone',ws().timezone)}<div class="grid2">${field('Workday starts','start','time',ws().hours.start,'required')}${field('Workday ends','end','time',ws().hours.end,'required')}</div>${dayCheckboxes(ws().hours.days)}<p class="help">Availability applies in the workspace timezone. Existing appointments retain their exact scheduled instant.</p><div class="error" role="alert"></div><button class="btn primary">Save workspace</button></form>`;
+else if(tab==='notifications')content=[['email','Booking confirmations','An update when a client books or changes a time.'],['reminders','Appointment reminders','A gentle nudge before each appointment.'],['digest','Daily agenda','Tomorrow’s schedule, delivered every evening.']].map(([id,t,d])=>`<div class="setting-row"><div><h3>${t}</h3><p class="subtext">${d}</p></div><button class="switch" role="switch" aria-label="${t}" aria-checked="${!!ws().notifications[id]}" data-action="notification-toggle" data-id="${id}"></button></div>`).join('')+'<p class="help" style="margin-top:20px">Preferences are saved locally. This demo does not send messages.</p>';
+else if(tab==='billing')content=billing();else if(tab==='danger')content=`<h3>Reset demo data</h3><p class="muted small" style="margin:10px 0 24px">Restore both sample workspaces and clear changes, clients and bookings made in this browser.</p>${btn('Reset all demo data','reset','danger','trash')}<div class="divider"></div><h3>Delete this workspace</h3><p class="muted small" style="margin:10px 0 24px">Permanently remove ${esc(ws().name)} and its records from this demo.</p>${btn('Delete workspace','delete-workspace','danger','trash')}`;return heading('Settings','The details that make this space yours.')+`<div class="settings-layout"><nav class="settings-nav" aria-label="Settings sections">${tabs.map(([id,t])=>`<a href="#settings?tab=${id}" class="${tab===id?'active':''}" ${tab===id?'aria-current="page"':''}>${t}</a>`).join('')}</nav><section class="settings-content panel"><div class="panelhead"><h2>${tabs.find(t=>t[0]===tab)?.[1]||'My profile'}</h2></div><div class="pad">${content}</div></section></div>`}
+function billing(){const w=ws(),plan=plans[w.plan],count=w.bookings.filter(b=>parts(b.start,w.timezone).date.startsWith(dateKey(new Date(),w.timezone).slice(0,7))&&b.status!=='cancelled').length;return `<div class="row between"><div><span class="tag purple">${w.plan} plan</span><h2 style="font-size:28px;margin:12px 0">$${plan.price}<span class="muted small"> / month</span></h2><p class="help">Demo subscription · no payment method on file</p></div>${btn('Change plan','upgrade','primary')}</div><div class="divider"></div><h3>Workspace usage</h3>${[['Monthly bookings',count,plan.bookings],['Team seats (including invites)',w.staff.length+w.invites.length,plan.seats]].map(([t,n,max])=>`<div style="margin-top:24px"><div class="row between small"><span>${t}</span><span>${n} / ${max===100000?'Unlimited':max}</span></div><div class="progress"><span style="width:${Math.min(100,n/max*100)}%"></span></div><p class="help">${n>=max?'You’ve reached this plan’s limit. Upgrade to add more.':max===100000?'Room to grow.':max-n+' remaining on your plan.'}</p></div>`).join('')}<div class="divider"></div><h3>Billing history</h3><p class="muted small" style="margin-top:10px">No invoices. Plan changes are simulated and do not charge a card.</p>`}
+function audit(){if(ws().plan!=='Business')return upgradeScreen('A clear record of every change','Workspace audit logs are included with Business.');return heading('Audit log','A trail of the changes that matter.')+`<section class="panel">${ws().audit.length?`<div class="tablewrap"><table><thead><tr><th>Action</th><th>Actor</th><th>Role</th><th>Time</th></tr></thead><tbody>${ws().audit.map(a=>`<tr><td>${esc(a.text)}</td><td>${esc(a.actor)}</td><td>${esc(a.role)}</td><td>${new Date(a.time).toLocaleString()}</td></tr>`).join('')}</tbody></table></div>`:empty('A fresh start','Actions you take in this workspace will appear here.')}</section>`}
+function apiPage(){if(ws().plan!=='Business')return upgradeScreen('Build your own connections','Mock API keys are available on the Business plan.');return heading('Developer API','A foundation for your next integration. Mock keys only.',btn('Create mock key','create-key','primary','plus'))+`<section class="panel pad"><h2>Your API keys</h2><p class="help" style="margin:8px 0 24px">These keys cannot authenticate requests. Never put real secrets into this demo.</p>${ws().keys.length?ws().keys.map(k=>`<div class="setting-row"><div><strong>${esc(k.name)}</strong><p class="subtext mono">bf_demo_••••••••${esc(k.last)}</p><p class="subtext">Created ${fmtDate(k.date)}</p></div><button class="btn sm danger" data-action="revoke-key" data-id="${k.id}">Revoke</button></div>`).join(''):empty('No keys yet','Create a mock key to explore the developer experience.')}<div class="divider"></div><h3>Example request</h3><code style="margin-top:12px">GET /api/v1/bookings<br>Authorization: Bearer bf_demo_your_mock_key<br>X-Workspace-ID: ${esc(ws().id)}</code></section>`}
+function bookingPage(){return heading('Your door is always open','A booking page that feels like your business.',`<button class="btn" data-action="embed">${icon('copy')}Embed code</button>${btn('Copy link','copy-link','primary','link')}`)+`<section class="panel pad"><div class="row between wrap"><div class="row"><span class="workspace-icon">${esc(initials(ws().name))}</span><div><h2>${esc(ws().name)}</h2><p class="subtext">bookflow.demo / ${esc(ws().slug)}</p></div></div>${btn('Open public preview','open-public','','external')}</div></section><div style="margin-top:24px">${publicBooking(true)}</div>`}
+function publicBooking(embedded=false){const w=ws(),s=w.services.find(x=>x.id===UI.publicService)||w.services[0];if(!s)return empty('No services available','This workspace is still preparing its booking page.');const st=w.staff.find(x=>x.id===UI.publicStaff)||w.staff[0];const days=Array.from({length:7},(_,i)=>addDays(dateKey(new Date(),UI.publicZone),i));const slots=availableSlots(s,st,UI.publicDate,UI.publicZone);const html=`${embedded?'':`<header class="public-header"><a href="#landing" class="muted small">Powered by BookFlow ↗</a><div class="workspace-icon" style="margin-top:24px">${esc(initials(w.name))}</div><h1>${esc(w.name)}</h1><p class="muted" style="margin-top:8px">Good things start with a conversation.</p></header>`}<section class="panel booking-widget"><div class="booking-intro"><span class="service-icon">${icon('calendar')}</span><h2>${esc(s.name)}</h2><p>${esc(s.description)}</p><div class="divider"></div><div class="row small">${icon('clock')}${s.duration} minutes</div><div class="row small" style="margin-top:14px">${icon('money')}${s.price?money(s.price):'Complimentary'}</div><div class="row small" style="margin-top:14px">${icon('staff')}With ${esc(st?.name||'your team')}</div><p style="margin-top:24px;font-size:11px">A little time. A meaningful connection.</p></div><div class="booking-options"><h2>Find your moment</h2><p class="subtext">Choose a service, a day, and a time that works.</p><div class="grid2" style="gap:12px;margin-top:24px">${selectField('Service','public-service',w.services.map(x=>({value:x.id,label:x.name})),s.id,'data-change="public-service"')}${selectField('Team member','public-staff',w.staff.map(x=>({value:x.id,label:x.name})),st?.id,'data-change="public-staff"')}</div><div class="row between"><h3>${fmtDate(UI.publicDate,{month:'long',year:'numeric'})}</h3><label style="font-size:11px;color:var(--muted)">Pick a date <input type="date" class="input" style="width:145px;padding:6px;font-size:11px;min-height:32px" aria-label="Choose booking date" min="${dateKey(new Date(),UI.publicZone)}" value="${UI.publicDate}" data-change="public-date"></label></div><div class="booking-days">${days.map(day=>`<button class="booking-day ${UI.publicDate===day?'selected':''}" data-action="public-day" data-id="${day}" aria-pressed="${UI.publicDate===day}"><small>${fmtDate(day,{weekday:'short'})}</small><strong>${Number(day.slice(8))}</strong></button>`).join('')}</div><div class="slots">${slots.map(time=>`<button class="slot ${UI.publicTime===time?'selected':''}" data-action="public-slot" data-id="${time}" aria-pressed="${UI.publicTime===time}">${fmtTime(wallISO(UI.publicDate,time,UI.publicZone),UI.publicZone)}</button>`).join('')}</div>${!slots.length?`<div class="empty" style="padding:20px"><h3>No open times this day</h3><p class="small">Try a different day or join the waitlist.</p></div>${btn('Join waitlist','join-waitlist','sm')}`:''}<div style="margin-top:24px">${zoneSelect('public-zone',UI.publicZone).replace('<select ','<select data-change="public-zone" ')}</div><button class="btn primary" style="width:100%" data-action="public-continue" ${!UI.publicTime?'disabled':''}>Continue ${icon('arrow')}</button><p class="help" style="text-align:center;margin-top:12px">Demo booking · no payment required</p></div></section>`;return embedded?html:`<main id="main" class="public-page">${html}<p class="small muted" style="text-align:center;margin:24px"><a href="#dashboard">← Back to workspace</a></p></main>`}
+function landing(){return `<div class="marketing"><header class="marketing-nav">${logo()}<nav class="row" aria-label="Marketing navigation"><a href="#landing" data-scroll="features">Why BookFlow</a><a href="#pricing">Pricing</a><a href="#login">Log in</a><a class="btn primary" href="#signup">Find your flow ${icon('arrow')}</a></nav></header><main id="main"><section class="hero"><div><span class="tag" style="background:var(--lime);color:#2c4a30;margin-bottom:24px">A little less admin. A lot more possibility.</span><h1>Make room for<br>what <em>matters.</em></h1><p>Meet BookFlow. The thoughtful scheduling platform that brings your team, your clients, and your time into a better rhythm.</p><div class="row wrap"><a href="#signup" class="btn primary">Start your workspace ${icon('arrow')}</a><a href="#dashboard" class="btn">Explore the live demo</a></div><div class="hero-note muted">Free to start. No credit card. Just a little more breathing room.</div></div><div class="hero-demo"><div class="row between"><div class="row"><span class="workspace-icon">F</span><strong>Form Studio</strong></div><span class="tag confirmed"><span class="badge-dot"></span>Live booking demo</span></div><h3>Your next good conversation.</h3><p style="font-size:12px;margin:6px 0 20px">A discovery call · 30 minutes · Complimentary</p><div class="row between"><strong class="small">Choose a day</strong><span class="muted small">${fmtDate(UI.publicDate,{month:'long'})}</span></div><div class="booking-days">${Array.from({length:5},(_,i)=>addDays(dateKey(),i+1)).map(day=>`<button class="booking-day ${UI.publicDate===day?'selected':''}" data-action="public-day" data-id="${day}"><small>${fmtDate(day,{weekday:'short'})}</small><strong>${Number(day.slice(8))}</strong></button>`).join('')}</div><div class="slots">${['09:00','10:30','14:00'].map(t=>`<button class="slot ${UI.publicTime===t?'selected':''}" data-action="public-slot" data-id="${t}">${t}</button>`).join('')}</div><button class="btn primary" style="width:100%;margin-top:20px" data-action="hero-book">Find my time ${icon('arrow')}</button><div class="row" style="justify-content:center;margin-top:16px;color:var(--muted);font-size:10px">${icon('shield')}Your time, thoughtfully protected.</div></div></section><div class="trustbar"><span style="font-size:11px;font-weight:400;align-self:center">Made for teams like yours</span><span>form® studio</span><span>northstar ↗</span><span>Layers & Co.</span><span>◌ goodspace</span></div><section id="features" class="marketing-section"><h2>Everything clicks into place.</h2><p>One calm home for a beautifully busy business.</p><div class="grid3">${[['calendar','A schedule that just works','Share your availability, avoid overlaps, and move appointments with a simple drag. More time doing what you love.'],['clients','People, not just appointments','Remember the little details. Keep client notes, history, and preferences together so every meeting feels personal.'],['analytics','Clarity for what comes next','See your revenue, understand your busiest hours, and find the patterns that help your business grow.']].map(([ic,t,d])=>`<article class="feature">${icon(ic)}<h3>${t}</h3><p>${d}</p></article>`).join('')}</div></section><section class="marketing-section" style="padding-top:30px"><h2>Room for every stage.</h2><p>Simple plans. A clear path forward.</p>${pricing(true)}</section><section class="marketing-section faq"><h2>A few things you might wonder.</h2>${[['Can I try it before signing up?','Absolutely. Explore the live demo workspace with sample bookings, clients and services. Everything runs locally in your browser.'],['Can my whole team use BookFlow?','Each workspace has its own team, availability, services and booking page. Choose Pro for five seats or Business for up to twenty-five.'],['Will clients need an account?','No. Clients can choose a service, a time and enter their details on your public booking page.'],['Does this demo connect to real services?','No. Authentication, billing, integrations and notifications are simulated. No card is charged and no messages are sent.'],['How is my demo data stored?','Changes are saved in this browser’s localStorage. Use Settings → Danger zone to reset. Avoid entering sensitive or real customer information.']].map(([q,a])=>`<details><summary>${q}</summary><p>${a}</p></details>`).join('')}</section><section class="marketing-section"><div class="cta"><div><h2>A better rhythm starts here.</h2><p>Give your business a little more room to grow.</p></div><a href="#signup" class="btn lime">Create your workspace ${icon('arrow')}</a></div></section></main><footer class="marketing-nav"><span class="muted small">© ${new Date().getFullYear()} BookFlow · Interactive product demo</span><a href="#dashboard" class="link small">Open demo workspace ↗</a></footer></div>`}
+function auth(type){const signup=type==='signup',forgot=type==='forgot';return `<div class="authpage"><aside class="authaside">${logo()}<div><h2>Your time.<br>Your people.<br>A better flow.</h2><p>A thoughtful home for a beautifully busy business.</p></div><small style="color:#9ab4a3">Make room for what matters.</small></aside><main id="main" class="authmain"><div class="authform"><h1>${forgot?'A fresh start':signup?'Find your flow.':'Welcome back.'}</h1><p>${forgot?'We’ll simulate a password reset for you.':signup?'Create a workspace that works your way.':'Your next great day starts here.'}</p><form data-form="${type}">${signup?field('Your name','name','text','','required maxlength="80" autocomplete="name"'):''}${field('Email address','email','email',signup?'':'olivia@formstudio.example','required maxlength="160" autocomplete="email"')}${forgot?'':field('Password','password','password',signup?'':'bookflow-demo','required minlength="8" autocomplete="'+(signup?'new-password':'current-password')+'"')}${!signup&&!forgot?'<p style="text-align:right;margin:-5px 0 20px"><a class="link small" href="#forgot">Forgot password?</a></p>':''}<div class="error" role="alert"></div><button class="btn primary">${forgot?'Send demo reset link':signup?'Create account':'Log in to demo'}${icon('arrow')}</button></form><p class="help" style="margin-top:16px">Simulated authentication. ${forgot?'No email is sent.':'Use any email and an 8+ character demo password. Credentials are never stored.'}</p><div class="authlinks">${signup?'Already have a workspace? <a class="link" href="#login">Log in</a>':forgot?'<a class="link" href="#login">← Back to log in</a>':'New here? <a class="link" href="#signup">Create a workspace</a>'}</div><div class="authlinks"><a class="muted" href="#dashboard">Explore without signing up ↗</a></div></div></main></div>`}
+function dayCheckboxes(days){return `<fieldset style="border:0;padding:0;margin:0 0 20px"><legend style="font-size:12px;font-weight:600;margin-bottom:9px">Working days</legend><div class="row wrap" style="gap:12px">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d,i)=>`<label class="small"><input name="days" type="checkbox" value="${i}" ${days.includes(i)?'checked':''}> ${d}</label>`).join('')}</div></fieldset>`}
+function onboarding(){const step=UI.onboardStep,d=UI.draft;return `<header class="marketing-nav">${logo()}<span class="muted small">Step ${step} of 3</span></header><main id="main" class="onboard"><div class="steps" aria-label="Step ${step} of 3">${[1,2,3].map(n=>`<span class="${n<=step?'active':''}"></span>`).join('')}</div><h1>${['Let’s make it yours.','What do you offer?','Find your rhythm.'][step-1]}</h1><p>${['First, a little about your company.','Start with one service. You can add more later.','Set the hours you’re happy to share.'][step-1]}</p><form data-form="onboarding">${step===1?`${field('Company name','company','text',d.company||'','required maxlength="80" placeholder="e.g. Goodspace Studio"')}${field('Logo color','color','color',d.color||'#4c7962')}${zoneSelect('timezone',d.timezone||localZone)}`:step===2?`${field('Service name','service','text',d.service||'Discovery call','required maxlength="80"')}<div class="grid2">${field('Duration (minutes)','duration','number',d.duration||30,'required min="15" max="240" step="15"')}${field('Price (USD)','price','number',d.price||0,'required min="0" max="100000" step="1"')}</div>`:`<div class="grid2">${field('Workday starts','start','time',d.start||'09:00','required')}${field('Workday ends','end','time',d.end||'17:00','required')}</div>${dayCheckboxes(d.days||[1,2,3,4,5])}<p class="help">Your new workspace starts on Free: 50 bookings a month and one seat.</p>`}<div class="error" role="alert"></div><div class="row between">${step>1?btn('Back','onboard-back'): '<a class="muted small" href="#landing">← Home</a>'}<button class="btn primary">${step===3?'Launch workspace':'Continue'} ${icon('arrow')}</button></div></form></main>`}
+// Scheduling domain: all times are instants. Working hours are wall times in the
+// workspace timezone. Buffers on both adjacent bookings participate in conflicts.
+function schedulingError(b,ignoreId='',batch=[]){const w=ws(),s=service(b.serviceId),person=w.staff.find(x=>x.id===b.staffId);if(!person)return 'Choose an available team member.';const start=Date.parse(b.start);if(!Number.isFinite(start))return 'Choose a valid date and time.';if(start<Date.now())return 'That time has already passed. Choose a future time.';const end=start+b.duration*60000;const p=parts(start,w.timezone),ep=parts(end,w.timezone);const weekday=new Date(p.date+'T12:00Z').getUTCDay();if(!w.hours.days.includes(weekday)||!person.days.includes(weekday))return 'Your team member is not working that day. Choose another day.';if(p.date!==ep.date||p.time<w.hours.start||p.time<person.start||ep.time>w.hours.end||ep.time>person.end)return 'That appointment falls outside working hours. Choose another time.';const blocked=[...w.bookings,...batch].some(other=>{if(other.id===ignoreId||other.staffId!==b.staffId||['cancelled','no-show'].includes(other.status))return false;const os=Date.parse(other.start),oe=os+other.duration*60000;return start<oe+(service(other.serviceId).buffer||0)*60000&&end+(s.buffer||0)*60000>os});if(blocked)return 'That time overlaps another appointment or its buffer. Choose an open time.';return ''}
+function usageError(bookings){const w=ws(),limit=plans[w.plan].bookings,counts={};w.bookings.filter(b=>b.status!=='cancelled').forEach(b=>{const m=parts(b.start,w.timezone).date.slice(0,7);counts[m]=(counts[m]||0)+1});for(const b of bookings){const m=parts(b.start,w.timezone).date.slice(0,7);counts[m]=(counts[m]||0)+1;if(counts[m]>limit)return `Your ${w.plan} plan’s monthly booking limit is reached for ${m}. Upgrade in Settings → Billing.`}return ''}
+function availableSlots(s,person,date,zone){if(!person)return [];const result=[];for(let hour=0;hour<24;hour++)for(const min of [0,30]){const time=String(hour).padStart(2,'0')+':'+String(min).padStart(2,'0');try{const start=wallISO(date,time,zone);if(!schedulingError({id:'new',start,duration:s.duration,serviceId:s.id,staffId:person.id}))result.push(time)}catch(e){/* DST gap is not a valid slot. */}}return result}
+function render(){closeModal(false);const path=route();document.documentElement.dataset.theme=Store.state.theme;document.documentElement.style.setProperty('--company',ws().color);if(path==='settings'){const t=new URLSearchParams(location.hash.split('?')[1]).get('tab');UI.setting=t||'profile';if(!['profile','notifications',...(admin()?['workspace']:[]),...(owner()?['billing','danger']:[])].includes(UI.setting))UI.setting='profile'}if(path==='public'){const id=new URLSearchParams(location.hash.split('?')[1]).get('workspace');if(id&&Store.state.workspaces.some(w=>w.id===id)){Store.state.active=id;document.documentElement.style.setProperty('--company',ws().color)}}const views={dashboard,calendar,bookings,clients:clientsPage,services:servicesPage,staff:staffPage,'booking-page':bookingPage,analytics,integrations,settings,audit,api:apiPage,pricing:()=>pricing(false)};let html='';if(path==='landing')html=landing();else if(['login','signup','forgot'].includes(path))html=auth(path);else if(path==='onboarding')html=onboarding();else if(path==='public')html=publicBooking();else if(!views[path])html=shell(empty('This page wandered off','Choose a page from the navigation.',`<a href="#dashboard" class="btn primary">Back to overview</a>`));else if(!allowed(path))html=shell(empty('This page needs a different role','Your current demo role does not have access.',btn('Switch demo role','profile','primary')));else html=shell(views[path]());$('#app').innerHTML=html;document.title=`${path==='landing'?'Make room for what matters':path[0].toUpperCase()+path.slice(1)} · BookFlow`;}
+// Accessible dialogs: focus trapping, Escape, return focus, and inert background.
+let modalReturn=null;
+function modal(title,body,foot='',wide=false){modalReturn=document.activeElement;$('#modal-root').innerHTML=`<div class="modal-backdrop"><section role="dialog" aria-modal="true" aria-labelledby="dialog-title" class="modal ${wide?'wide':''}"><header class="modal-head"><h2 id="dialog-title">${title}</h2><button class="iconbtn" data-action="close-modal" aria-label="Close dialog">${icon('close')}</button></header><div class="modal-body">${body}</div>${foot?`<footer class="modal-foot">${foot}</footer>`:''}</section></div>`;$('#app').inert=true;setTimeout(()=>{$('input:not([type=hidden]),select,textarea,button', $('.modal-body'))?.focus()||$('.modal-head button')?.focus()},0)}
+function closeModal(restore=true){if(!$('#modal-root').innerHTML)return;$('#modal-root').innerHTML='';$('#app').inert=false;if(restore&&modalReturn?.isConnected)modalReturn.focus()}
+function confirmDialog(title,text,onConfirm,label='Confirm'){modal(title,`<p class="muted">${text}</p>`,btn('Cancel','close-modal')+`<button class="btn danger" id="confirm-action">${label}</button>`);$('#confirm-action').onclick=()=>{closeModal();onConfirm()}}
+function upgrade(feature='This feature'){modal('A little more room to grow',`<span class="service-icon" style="margin-bottom:16px">${icon('bolt')}</span><h2>${esc(feature)} is a premium feature.</h2><p class="muted" style="margin-top:12px">Explore Pro for recurring bookings, analytics and integrations, or Business for audit logs and API access. Plan changes are simulated.</p>`,btn('Maybe later','close-modal')+btn('Explore plans','view-plans','primary','arrow'))}
+function bookingForm(id='',preset={}){const b=ws().bookings.find(x=>x.id===id);if(b&&!canEdit(b))return toast('You do not have permission to edit this booking.');const zone=displayZone(),p=b?parts(b.start,zone):null;const next=addDays(dateKey(new Date(),zone),1);const s=service(b?.serviceId||ws().services[0]?.id);const selectedClient=role()==='Client'?myClient()?.id:b?.clientId||ws().clients[0]?.id;const people=ws().staff.filter(x=>role()!=='Staff'||x.id===me()?.id);modal(b?'Reschedule appointment':'Make a little time',`<form data-form="booking" id="booking-form"><input type="hidden" name="id" value="${b?.id||''}"><div class="grid2">${selectField('Client','clientId',(role()==='Client'?ws().clients.slice(0,1):ws().clients).map(c=>({value:c.id,label:c.name})),selectedClient,'required')}${selectField('Service','serviceId',ws().services.map(s=>({value:s.id,label:s.name})),b?.serviceId||s.id,'required')}</div><div class="grid2">${selectField('Team member','staffId',people.map(s=>({value:s.id,label:s.name})),b?.staffId||people[0]?.id,'required')}${zoneSelect('zone',zone)}</div><div class="grid2">${field('Date','date','date',p?.date||preset.date||next,`required min="${dateKey(new Date(),zone)}"`)}${field('Start time','time','time',p?.time||preset.time||'10:00','required step="900"')}</div>${!b?`<div class="grid2">${selectField('Repeat','repeat',[{value:'none',label:'Does not repeat'},{value:'weekly',label:'Weekly · Pro feature'},{value:'fortnightly',label:'Every 2 weeks · Pro feature'}],'none')}${field('Number of appointments','count','number',4,'min="2" max="12"')}</div>`:''}<div class="field"><label for="f-notes">Appointment note (optional)</label><textarea name="notes" id="f-notes" maxlength="1000">${esc(b?.notes||'')}</textarea></div><p class="help">Duration and price follow the selected service. Working hours and buffers are checked before saving.</p>${!ws().clients.length?'<p class="error">Add a client before creating a booking.</p>':''}<div class="error" role="alert"></div></form>`,btn('Cancel','close-modal')+`<button class="btn primary" type="submit" form="booking-form">${b?'Save new time':'Create booking'} ${icon('check')}</button>`,true)}
+function detail(id){const b=ws().bookings.find(b=>b.id===id);if(!b)return;modal('Appointment details',`<div class="row">${avatar(client(b.clientId).name)}<div><h2>${esc(client(b.clientId).name)}</h2><p class="subtext">${esc(client(b.clientId).email)}</p></div><span style="margin-left:auto">${badge(b.status)}</span></div><div class="divider"></div>${[['Service',service(b.serviceId).name],['When',fmtDate(parts(b.start,displayZone()).date,{weekday:'long',month:'long',day:'numeric',year:'numeric'})+' · '+fmtTime(b.start)],['Timezone',displayZone()],['With',staff(b.staffId).name],['Duration',b.duration+' minutes'],['Amount',money(b.price)],['Recurrence',b.recurring?'Part of a recurring series':'One-time appointment']].map(([k,v])=>`<div class="service-detail"><span class="muted">${k}</span><strong>${esc(v)}</strong></div>`).join('')}${b.notes?`<p class="help" style="margin-top:16px">${esc(b.notes)}</p>`:''}${ws().integrations.zoom?'<p class="help" style="margin-top:16px">Zoom: meeting link would be generated in production.</p>':''}${canEdit(b)&&role()!=='Client'?`<div class="row wrap" style="margin-top:20px">${['confirmed','completed','no-show'].map(s=>`<button class="btn sm" data-action="booking-status" data-id="${b.id}" data-status="${s}" ${b.status===s?'disabled':''}>Mark ${s}</button>`).join('')}</div>`:''}`,canEdit(b)?`<button class="btn danger" data-action="delete-booking" data-id="${b.id}">${icon('trash')}Delete</button><button class="btn" data-action="cancel-booking" data-id="${b.id}" ${b.status==='cancelled'?'disabled':''}>Cancel appointment</button><button class="btn primary" data-action="reschedule" data-id="${b.id}">Reschedule</button>`:btn('Close','close-modal'),true)}
+function saveBookings(data,form){const id=data.id,b=ws().bookings.find(x=>x.id===id);if(b&&!canEdit(b))throw Error('You cannot edit this booking.');if(!b&&role()==='Staff'&&data.staffId!==me()?.id)throw Error('Staff can book their own calendar only.');if(role()==='Client'&&data.clientId!==myClient()?.id)throw Error('You can book for your own client profile only.');const s=ws().services.find(s=>s.id===data.serviceId);if(!s||!ws().clients.some(c=>c.id===data.clientId))throw Error('Select a valid service and client.');if(data.repeat!=='none'&&data.repeat&&ws().plan==='Free'){upgrade('Recurring bookings');return}const count=!b&&data.repeat!=='none'?Number(data.count):1;if(!Number.isInteger(count)||count<1||count>12)throw Error('Choose between 2 and 12 recurring appointments.');const batch=[];for(let i=0;i<count;i++){const date=addDays(data.date,i*(data.repeat==='fortnightly'?14:7));const next={id:b?.id||uid(),clientId:data.clientId,serviceId:s.id,staffId:data.staffId,start:wallISO(date,data.time,data.zone),duration:s.duration,price:s.price,status:b?.status==='cancelled'?'confirmed':b?.status||'confirmed',notes:data.notes||'',recurring:count>1||b?.recurring||false};const err=schedulingError(next,id,batch);if(err)throw Error((count>1?`Appointment ${i+1}: `:'')+err);batch.push(next)}if(!b){const err=usageError(batch);if(err)throw Error(err)}else{const prior=ws().bookings;ws().bookings=prior.filter(x=>x.id!==id);const err=usageError(batch);ws().bookings=prior;if(err)throw Error(err)}if(b)Object.assign(b,batch[0]);else ws().bookings.push(...batch);log(b?'Rescheduled '+client(data.clientId).name+'’s appointment':`Created ${batch.length} appointment${batch.length>1?'s':''} for ${client(data.clientId).name}`);persist();closeModal();render();toast(b?'Appointment rescheduled':batch.length>1?`${batch.length} recurring appointments created`:'You’re booked. A little more flow.');}
+function deleteBookings(ids){const w=ws(),removed=w.bookings.filter(b=>ids.includes(b.id)&&canEdit(b));if(!removed.length)return;w.bookings=w.bookings.filter(b=>!removed.some(r=>r.id===b.id));log(`Deleted ${removed.length} appointment${removed.length>1?'s':''}`);persist();UI.selected.clear();closeModal();render();toast(`${removed.length} booking${removed.length>1?'s':''} deleted`,'Undo',()=>{w.bookings.push(...removed);w.audit.unshift({id:uid(),text:'Restored deleted appointments',actor:Store.state.profile.name,role:role(),time:Date.now()});persist();render();toast('Appointments restored')})}
+function statusUpdate(ids,status){const batch=ws().bookings.filter(b=>ids.includes(b.id)&&canEdit(b));if(status==='confirmed'){for(const b of batch){const err=schedulingError(b,b.id);if(err)return toast(err)}}if(['completed','no-show'].includes(status)&&batch.some(b=>Date.parse(b.start)>Date.now()))return toast('Future appointments cannot be marked completed or no-show.');batch.forEach(b=>b.status=status);log(`Marked ${batch.length} appointment${batch.length>1?'s':''} ${status}`);UI.selected.clear();persist();closeModal();render();toast('Booking status updated')}
+function clientForm(id=''){const c=ws().clients.find(c=>c.id===id);modal(c?'Client profile':'A new connection',`<form data-form="client" id="client-form"><input type="hidden" name="id" value="${c?.id||''}">${field('Full name','name','text',c?.name||'','required maxlength="100"')}${field('Email address','email','email',c?.email||'','required maxlength="160"')}${field('Tags (comma separated)','tags','text',c?.tags.join(', ')||'','maxlength="160"')}<div class="field"><label for="client-notes">Private notes</label><textarea id="client-notes" name="notes" maxlength="2000">${esc(c?.notes||'')}</textarea></div><div class="error" role="alert"></div></form>${c?`<div class="divider"></div><h3>Appointment history</h3><div style="max-height:200px;overflow:auto">${ws().bookings.filter(b=>b.clientId===c.id).sort((a,b)=>b.start.localeCompare(a.start)).map(b=>`<div class="service-detail"><div>${esc(service(b.serviceId).name)}<p class="subtext">${fmtDate(parts(b.start,displayZone()).date)} · ${fmtTime(b.start)}</p></div>${badge(b.status)}</div>`).join('')||'<p class="help" style="margin-top:12px">No appointments yet.</p>'}</div>`:''}`,btn('Cancel','close-modal')+'<button class="btn primary" form="client-form">Save client</button>')}
+function serviceForm(id=''){if(!admin())return;const s=ws().services.find(s=>s.id===id);modal(s?'Edit service':'Create a service',`<form data-form="service" id="service-form"><input type="hidden" name="id" value="${s?.id||''}">${field('Service name','name','text',s?.name||'','required maxlength="80"')}<div class="field"><label for="service-description">Description</label><textarea name="description" id="service-description" maxlength="500">${esc(s?.description||'')}</textarea></div><div class="grid2">${field('Duration (minutes)','duration','number',s?.duration||30,'required min="15" max="240" step="15"')}${field('Price (USD)','price','number',s?.price||0,'required min="0" max="100000" step="1"')}</div><div class="grid2">${field('Buffer after (minutes)','buffer','number',s?.buffer??15,'required min="0" max="120" step="5"')}${selectField('Calendar color','color',['purple','green','blue'],s?.color||'green')}</div><p class="help">Existing bookings keep their original duration and price.</p><div class="error" role="alert"></div></form>`,btn('Cancel','close-modal')+'<button class="btn primary" form="service-form">Save service</button>')}
+function inviteForm(){if(!admin())return;const w=ws();if(w.staff.length+w.invites.length>=plans[w.plan].seats)return upgrade('More team seats');modal('Good work takes good people',`<form data-form="invite" id="invite-form">${field('Email address','email','email','','required maxlength="160"')}${selectField('Workspace role','role',owner()?['Staff','Admin']:['Staff'],'Staff')}<p class="help">Creates a pending demo invitation. No email is sent. Pending invitations count toward the seat limit.</p><div class="error" role="alert"></div></form>`,btn('Cancel','close-modal')+'<button class="btn primary" form="invite-form">Prepare invite</button>')}
+function staffAvailability(id){const s=ws().staff.find(s=>s.id===id);if(!s||(!admin()&&s.id!==me()?.id))return;modal('Availability · '+esc(s.name),`<form data-form="availability" id="availability-form"><input type="hidden" name="id" value="${s.id}"><p class="help" style="margin-bottom:20px">Working hours in ${esc(ws().timezone)}. Existing appointments are preserved.</p><div class="grid2">${field('Start time','start','time',s.start,'required')}${field('End time','end','time',s.end,'required')}</div>${dayCheckboxes(s.days)}<div class="error" role="alert"></div></form>`,btn('Cancel','close-modal')+'<button class="btn primary" form="availability-form">Save availability</button>')}
+function publicContinue(){if(!UI.publicTime)return;const s=ws().services.find(s=>s.id===UI.publicService)||ws().services[0];modal('You’re one step away',`<p class="muted" style="margin-bottom:20px">${esc(s.name)} · ${fmtDate(UI.publicDate)} · ${esc(UI.publicTime)} (${esc(UI.publicZone)})</p><form data-form="public-book" id="public-form">${field('Your name','name','text',role()==='Client'?myClient()?.name:'','required maxlength="100" autocomplete="name"')}${field('Email address','email','email',role()==='Client'?myClient()?.email:'','required maxlength="160" autocomplete="email"')}<p class="help">Your contact details stay in this browser. No payment or email is sent.</p><div class="error" role="alert"></div></form>`,btn('Go back','close-modal')+'<button class="btn primary" form="public-form">Confirm booking</button>')}
+function commandPalette(){modal('A little shortcut',`<label class="visually-hidden" for="command">Search pages, clients and appointments</label><input id="command" class="command-input" placeholder="Where would you like to go?" autocomplete="off"><div class="command-results" id="command-results"></div><p class="help" style="padding:8px 16px">↑ ↓ to move · Enter to open · Esc to close · N new booking · G then C calendar</p>`);$('#command').oninput=()=>commandResults($('#command').value);commandResults('')}
+function commandResults(q){const search=q.toLowerCase();const items=[...navItems.filter(n=>allowed(n[0])).map(([id,label,ic])=>({label,ic,action:'navigate',id})),{label:'New booking',ic:'plus',action:'new-booking'},...(role()!=='Client'?ws().clients.map(c=>({label:c.name,ic:'clients',action:'client-detail',id:c.id})):[])];$('#command-results').innerHTML=items.filter(x=>x.label.toLowerCase().includes(search)).slice(0,12).map(x=>`<button class="command-result" data-action="${x.action}" data-id="${x.id||''}">${icon(x.ic)}${esc(x.label)}<small>↵</small></button>`).join('')||'<div class="empty">No results. Try “calendar” or a client’s name.</div>'}
+function copyText(text,label='Copied to clipboard'){if(navigator.clipboard?.writeText)navigator.clipboard.writeText(text).then(()=>toast(label)).catch(()=>copyFallback(text));else copyFallback(text)}
+function copyFallback(text){modal('Copy this text',`<label class="field">Select and copy<textarea class="input" rows="4" readonly>${esc(text)}</textarea></label>`);$('textarea',$('.modal')).select()}
+function bookingLink(){const u=new URL(location.href);u.hash='public?workspace='+encodeURIComponent(ws().id);return u.href}
+function exportCSV(){const rows=[['Client','Email','Service','Team member','Start (ISO)','Timezone','Duration (min)','Status','Amount (USD)'],...visibleBookings().filter(b=>(UI.filter==='all'||b.status===UI.filter)&&(UI.staffFilter==='all'||b.staffId===UI.staffFilter)&&[client(b.clientId).name,client(b.clientId).email,service(b.serviceId).name].join(' ').toLowerCase().includes(UI.query.toLowerCase())).map(b=>[client(b.clientId).name,client(b.clientId).email,service(b.serviceId).name,staff(b.staffId).name,b.start,displayZone(),b.duration,b.status,b.price])];const csv='\uFEFF'+rows.map(r=>r.map(v=>{let t=String(v);if(/^[=+@\-\t\r]/.test(t))t="'"+t;return '"'+t.replaceAll('"','""')+'"'}).join(',')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download=ws().slug+'-bookings.csv';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast('Bookings exported as CSV')}
+function simulateIncoming(silent=false){if(!admin()||document.hidden||$('.modal'))return;const w=ws();const s=w.services[0],st=w.staff[0];if(!s||!st)return;for(let i=1;i<10;i++){const date=addDays(dateKey(new Date(),w.timezone),i);const slots=availableSlots(s,st,date,w.timezone);if(!slots.length)continue;const c=w.clients[Math.floor(Math.random()*w.clients.length)];if(!c)return;const b={id:uid(),clientId:c.id,serviceId:s.id,staffId:st.id,start:wallISO(date,slots[0],w.timezone),duration:s.duration,price:s.price,status:'pending',notes:'Simulated incoming appointment',recurring:false};if(usageError([b]))return !silent&&toast('Monthly booking limit reached. Explore plans in Billing.');w.bookings.push(b);log(c.name+' requested a '+s.name.toLowerCase());persist();if(route()==='dashboard')render();toast('New booking request from '+c.name,'View',()=>detail(b.id));return}if(!silent)toast('No open times found for an incoming booking.')}
+// One delegated event layer keeps rerenders free from duplicate listeners.
+document.addEventListener('click',e=>{const scroll=e.target.closest('[data-scroll]');if(scroll){e.preventDefault();document.getElementById(scroll.dataset.scroll)?.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});return}const el=e.target.closest('[data-action]');if(!el)return;if(e.target.closest('.cal-event')&&el.classList.contains('cal-cell'))return;const a=el.dataset.action,id=el.dataset.id;e.stopPropagation();switch(a){case'close-modal':closeModal();break;case'navigate':closeModal();go(id);break;case'collapse':Store.state.collapsed=!Store.state.collapsed;persist();render();break;case'theme':Store.state.theme=Store.state.theme==='light'?'dark':'light';persist();document.documentElement.dataset.theme=Store.state.theme;if(!$('.modal'))render();break;case'command':commandPalette();break;case'new-booking':bookingForm();break;case'booking-detail':detail(id);break;case'reschedule':bookingForm(id);break;case'delete-booking':confirmDialog('Delete this appointment?','The appointment will be removed. You can undo this for 10 seconds.',()=>deleteBookings([id]),'Delete appointment');break;case'cancel-booking':confirmDialog('Cancel this appointment?','The time will become available to other clients.',()=>statusUpdate([id],'cancelled'),'Cancel appointment');break;case'booking-status':statusUpdate([id],el.dataset.status);break;case'bulk-confirm':statusUpdate([...UI.selected],'confirmed');break;case'bulk-cancel':confirmDialog('Cancel selected bookings?',`${UI.selected.size} appointments will be cancelled.`,()=>statusUpdate([...UI.selected],'cancelled'),'Cancel bookings');break;case'bulk-delete':confirmDialog('Delete selected bookings?',`${UI.selected.size} appointments will be removed. Undo is available for 10 seconds.`,()=>deleteBookings([...UI.selected]),'Delete bookings');break;case'dash-tab':UI.dashTab=id;render();break;case'cal-view':UI.calView=id;render();break;case'cal-today':UI.calDate=dateKey(new Date(),displayZone());render();break;case'cal-prev':case'cal-next':{const n=a==='cal-prev'?-1:1;if(UI.calView==='month'){const d=new Date(UI.calDate.slice(0,8)+'01T12:00:00Z');d.setUTCMonth(d.getUTCMonth()+n);UI.calDate=d.toISOString().slice(0,10)}else UI.calDate=addDays(UI.calDate,n*(UI.calView==='week'?7:1));render();break}case'calendar-day':UI.calDate=id;UI.calView='day';render();break;case'slot-book':if(e.target.closest('.cal-event'))return;bookingForm('',{date:el.dataset.date,time:el.dataset.time});break;case'add-client':if(role()!=='Client')clientForm();break;case'client-detail':if(role()!=='Client')clientForm(id);break;case'add-service':case'edit-service':serviceForm(id);break;case'invite':inviteForm();break;case'staff-availability':staffAvailability(id);break;case'revoke-invite':if(admin()){ws().invites=ws().invites.filter(x=>x.id!==id);log('Revoked team invitation');persist();render();toast('Invitation revoked')}break;case'public-day':UI.publicDate=id;UI.publicTime='';render();break;case'public-slot':UI.publicTime=id;render();break;case'public-continue':publicContinue();break;case'hero-book':if(!UI.publicTime){toast('Choose a time to continue.');break}go('public?workspace='+ws().id);break;case'open-public':UI.publicTime='';go('public?workspace='+ws().id);break;case'copy-link':copyText(bookingLink(),'Booking link copied — works with demo data in this browser');break;case'embed':modal('Bring your booking page along',`<p class="help" style="margin-bottom:16px">Host this HTML file first, then use its HTTPS URL as the iframe source. A local file URL cannot be embedded on a hosted website. Each browser keeps its own demo data.</p><code>&lt;iframe src="${esc(bookingLink())}" title="Book with ${esc(ws().name)}" width="100%" height="850" style="border:0"&gt;&lt;/iframe&gt;</code>`,btn('Copy embed code','copy-embed','primary','copy'));break;case'copy-embed':copyText(`<iframe src="${bookingLink()}" title="Book with ${ws().name.replaceAll('"','')}" width="100%" height="850" style="border:0"></iframe>`);break;case'join-waitlist':modal('A spot for you, when one opens',`<form data-form="waitlist" id="waitlist-form">${field('Your name','name','text','','required maxlength="100"')}${field('Email address','email','email','','required maxlength="160"')}<p class="help">Requested: ${fmtDate(UI.publicDate)} · ${esc((ws().services.find(s=>s.id===UI.publicService)||ws().services[0])?.name)}. Saved locally; no notification is sent.</p><div class="error" role="alert"></div></form>`,btn('Cancel','close-modal')+'<button class="btn primary" form="waitlist-form">Join waitlist</button>');break;case'waitlist':modal('Waitlist',ws().waitlist.length?ws().waitlist.map(x=>`<div class="setting-row"><div><h3>${esc(x.name)}</h3><p class="subtext">${esc(x.email)} · ${fmtDate(x.date)} · ${esc(service(x.serviceId).name)}</p></div>${admin()?`<button class="btn sm" data-action="remove-waitlist" data-id="${x.id}">Remove</button>`:''}</div>`).join(''):empty('Nobody waiting','Waitlist requests from the booking page appear here.'));break;case'remove-waitlist':if(admin()){ws().waitlist=ws().waitlist.filter(x=>x.id!==id);persist();closeModal();toast('Waitlist entry removed')}break;case'export':exportCSV();break;case'simulate':simulateIncoming();break;case'upgrade':upgrade();break;case'view-plans':closeModal();go('pricing');break;case'billing':if(owner())go('settings?tab=billing');else toast('Only the workspace owner can manage billing.');break;case'choose-plan':if(!owner()){toast('Only the workspace owner can change the plan.');break}{const p=plans[id],used=ws().bookings.filter(b=>parts(b.start,ws().timezone).date.startsWith(dateKey(new Date(),ws().timezone).slice(0,7))&&b.status!=='cancelled').length;if(ws().staff.length+ws().invites.length>p.seats||used>p.bookings){toast('Usage exceeds this plan. Reduce team seats or bookings before downgrading.');break}confirmDialog('Switch to '+id+'?',`Demo plan: $${p.price}/month. No payment is collected.`,()=>{ws().plan=id;if(id==='Free')ws().integrations={google:false,zoom:false,stripe:false};log('Changed workspace plan to '+id);persist();render();toast('Your workspace is now on '+id)},'Switch to '+id)}break;case'integration':if(!admin())break;if(ws().plan==='Free'){upgrade('Integrations');break}ws().integrations[id]=!ws().integrations[id];log((ws().integrations[id]?'Connected ':'Disconnected ')+id+' (simulated)');persist();render();toast('Demo connection '+(ws().integrations[id]?'enabled':'disabled'));break;case'notification-toggle':ws().notifications[id]=!ws().notifications[id];persist();render();toast('Preference saved');break;case'notifications':modal('Your workspace, in motion',`<div class="notification-list">${activityList(ws().activity)}</div>`);break;case'profile':modal('Make yourself at home',`<div class="row">${avatar(Store.state.profile.name,'gold')}<div><h2>${esc(Store.state.profile.name)}</h2><p class="subtext">${esc(Store.state.profile.email)}</p></div></div><div class="divider"></div>${selectField('Explore a demo role','demo-role',['Owner','Admin','Staff','Client'],role(),'data-change="role"')}<p class="help">Roles change navigation and permitted actions. Staff uses ${esc((ws().staff.find(s=>s.role==='Staff')||ws().staff[0])?.name)}’s calendar. Client uses ${esc(myClient()?.name||'the first client')}’s profile. This is a UI simulation, not server-side security.</p><div class="divider"></div><div class="stack"><a class="btn" href="#settings">${icon('settings')}Profile settings</a><button class="btn" data-action="add-workspace">${icon('plus')}Create another workspace</button><a class="btn" href="#landing">${icon('logout')}Leave demo workspace</a></div>`);break;case'add-workspace':closeModal();UI.draft={};UI.onboardStep=1;go('onboarding');break;case'onboard-back':UI.onboardStep=Math.max(1,UI.onboardStep-1);render();break;case'mobile-menu':modal('Your workspace',`<nav class="stack">${[...navItems,...(admin()?[['audit','Audit log','audit'],['api','Developer API','key']]:[]),['settings','Settings','settings']].filter(n=>allowed(n[0])).map(([id,t,ic])=>`<a class="btn" href="#${id}" style="justify-content:flex-start">${icon(ic)}${t}</a>`).join('')}</nav>`);break;case'create-key':if(admin()&&ws().plan==='Business')modal('Create a mock API key',`<form data-form="api-key" id="api-form">${field('Key name','name','text','','required maxlength="80" placeholder="e.g. Reporting dashboard"')}<p class="help">This generates a non-functional demo key, not a secret credential.</p></form>`,btn('Cancel','close-modal')+'<button class="btn primary" form="api-form">Create mock key</button>');break;case'revoke-key':if(admin()){ws().keys=ws().keys.filter(k=>k.id!==id);log('Revoked mock API key');persist();render();toast('Mock key revoked')}break;case'reset':if(owner())confirmDialog('Start fresh?', 'This restores all demo workspaces and removes your local changes. This action cannot be undone.',()=>{Store.state=seed();persist();UI.selected.clear();UI.zone='';go('dashboard');render();toast('Demo reset. A fresh start.')},'Reset all demo data');break;case'delete-workspace':if(!owner())break;if(Store.state.workspaces.length===1){toast('Create another workspace before deleting your only workspace.');break}confirmDialog('Delete '+esc(ws().name)+'?', 'This removes this workspace and all of its local records. This action cannot be undone.',()=>{Store.state.workspaces=Store.state.workspaces.filter(w=>w.id!==ws().id);Store.state.active=Store.state.workspaces[0].id;persist();UI.selected.clear();go('dashboard');render();toast('Workspace deleted')},'Delete workspace');break;}});
+document.addEventListener('change',e=>{const el=e.target,a=el.dataset.change;if(!a)return;switch(a){case'workspace':Store.state.active=el.value;UI.selected.clear();UI.zone='';UI.filter='all';UI.staffFilter='all';UI.query='';UI.publicService='';UI.publicStaff='';UI.publicTime='';persist();render();toast('Switched to '+ws().name);break;case'role':Store.state.role=el.value;UI.selected.clear();persist();closeModal();if(!allowed(route()))go('dashboard');render();toast('Exploring as '+role());break;case'status-filter':UI.filter=el.value;UI.selected.clear();render();break;case'staff-filter':UI.staffFilter=el.value;UI.selected.clear();render();break;case'select-booking':el.checked?UI.selected.add(el.value):UI.selected.delete(el.value);render();break;case'select-all':{const ids=$$('tbody input[data-change=select-booking]').map(x=>x.value);ids.forEach(id=>el.checked?UI.selected.add(id):UI.selected.delete(id));render();break}case'cal-zone':UI.zone=el.value;render();break;case'public-service':UI.publicService=el.value;UI.publicTime='';render();break;case'public-staff':UI.publicStaff=el.value;UI.publicTime='';render();break;case'public-zone':UI.publicZone=el.value;UI.publicTime='';render();break;case'public-date':if(!/^\d{4}-\d{2}-\d{2}$/.test(el.value))return;UI.publicDate=el.value;UI.publicTime='';render();break;}});
+let searchTimer;document.addEventListener('input',e=>{const a=e.target.dataset.input;if(!a)return;const pos=e.target.selectionStart,id=e.target.id;UI.query=e.target.value;clearTimeout(searchTimer);searchTimer=setTimeout(()=>{render();const input=document.getElementById(id);input?.focus();input?.setSelectionRange(pos,pos)},220)});
+document.addEventListener('submit',e=>{const form=e.target;if(!form.dataset.form)return;e.preventDefault();const data=Object.fromEntries(new FormData(form)),kind=form.dataset.form;const error=$('.error',form);if(error)error.textContent='';try{switch(kind){case'booking':saveBookings(data,form);break;case'client':{if(role()==='Client')throw Error('This action requires a team role.');if(ws().clients.some(c=>c.email.toLowerCase()===data.email.toLowerCase()&&c.id!==data.id))throw Error('A client with this email already exists.');const old=ws().clients.find(c=>c.id===data.id),obj={id:old?.id||uid(),name:data.name.trim(),email:data.email.trim(),tags:data.tags.split(',').map(x=>x.trim()).filter(Boolean).slice(0,8),notes:data.notes.trim()};if(!obj.name)throw Error('Please enter a client name.');if(old)Object.assign(old,obj);else ws().clients.push(obj);log((old?'Updated ':'Added ')+obj.name+'’s client profile');persist();closeModal();render();toast('Client saved');break}case'service':{if(!admin())throw Error('An admin role is required.');const old=ws().services.find(s=>s.id===data.id),obj={id:old?.id||uid(),name:data.name.trim(),description:data.description.trim(),duration:Number(data.duration),price:Number(data.price),buffer:Number(data.buffer),color:data.color};if(!obj.name)throw Error('Please enter a service name.');if(old)Object.assign(old,obj);else ws().services.push(obj);log((old?'Updated ':'Created ')+obj.name+' service');persist();closeModal();render();toast('Service saved');break}case'invite':{if(!admin())throw Error('An admin role is required.');if(ws().staff.length+ws().invites.length>=plans[ws().plan].seats)throw Error('Your seat limit has been reached. Upgrade your plan.');if(ws().invites.some(i=>i.email.toLowerCase()===data.email.toLowerCase())||ws().staff.some(s=>s.email.toLowerCase()===data.email.toLowerCase()))throw Error('That person is already a member or has a pending invitation.');ws().invites.push({id:uid(),email:data.email,role:data.role});log('Prepared invitation for '+data.email);persist();closeModal();render();toast('Demo invitation prepared. No email sent.');break}case'availability':{const s=ws().staff.find(s=>s.id===data.id);if(!s||(!admin()&&s.id!==me()?.id))throw Error('You cannot edit this team member.');const days=new FormData(form).getAll('days').map(Number);if(data.start>=data.end||!days.length)throw Error('Choose an end time after the start, and at least one working day.');Object.assign(s,{start:data.start,end:data.end,days});log('Updated availability for '+s.name);persist();closeModal();render();toast('Availability saved');break}case'profile':Store.state.profile={name:data.name.trim(),email:data.email.trim()};if(!Store.state.profile.name)throw Error('Please enter a name.');persist();render();toast('Profile saved');break;case'workspace':{if(!admin())throw Error('An admin role is required.');const days=new FormData(form).getAll('days').map(Number);if(data.start>=data.end||!days.length)throw Error('Choose valid working hours and at least one working day.');if(!data.name.trim())throw Error('Please enter a workspace name.');Object.assign(ws(),{name:data.name.trim(),color:data.color,timezone:data.timezone,hours:{start:data.start,end:data.end,days}});log('Updated workspace settings');persist();render();toast('Workspace settings saved');break}case'login':Store.state.profile.email=data.email;persist();go('dashboard');toast('Welcome back to your demo workspace');break;case'signup':Store.state.profile={name:data.name.trim(),email:data.email};persist();UI.onboardStep=1;UI.draft={};go('onboarding');break;case'forgot':modal('Check your inbox — in spirit',`<span class="service-icon" style="margin-bottom:16px">${icon('mail')}</span><h2>Reset request simulated.</h2><p class="muted" style="margin-top:12px">A real app would send a password reset to ${esc(data.email)}. In this demo, return to login and use any password with at least 8 characters.</p>`,`<a class="btn primary" href="#login">Return to login</a>`);break;case'onboarding':{Object.assign(UI.draft,data);if(UI.onboardStep===3){const days=new FormData(form).getAll('days').map(Number);if(data.start>=data.end||!days.length)throw Error('Choose valid working hours and at least one working day.');UI.draft.days=days;const d=UI.draft,id=uid();if(!d.company?.trim())throw Error('Please go back and enter a company name.');const w=seedWorkspace(id,d.company.trim(),d.color,'Free');w.timezone=d.timezone;w.hours={start:d.start,end:d.end,days};w.bookings=[];w.clients=[{id:uid(),name:Store.state.profile.name,email:Store.state.profile.email,tags:['New'],notes:''}];w.staff=[{id:uid(),name:Store.state.profile.name,email:Store.state.profile.email,role:'Owner',start:d.start,end:d.end,days}];w.services=[{id:uid(),name:d.service.trim(),duration:Number(d.duration),price:Number(d.price),buffer:15,description:'A little time to connect.',color:'green'}];w.activity=[{id:uid(),text:'Your workspace is ready. Welcome to BookFlow!',time:Date.now()}];Store.state.workspaces.push(w);Store.state.active=w.id;Store.state.role='Owner';UI.publicService='';UI.publicStaff='';UI.selected.clear();UI.zone='';persist();go('dashboard');toast('Your workspace is ready. Find your flow.')}else{UI.onboardStep++;render()}break}case'public-book':{const s=ws().services.find(s=>s.id===UI.publicService)||ws().services[0],st=ws().staff.find(s=>s.id===UI.publicStaff)||ws().staff[0];if(!UI.publicTime)throw Error('Choose a time first.');const b={id:uid(),serviceId:s.id,staffId:st.id,start:wallISO(UI.publicDate,UI.publicTime,UI.publicZone),duration:s.duration,price:s.price,status:'confirmed',notes:'Booked through public page',recurring:false};const err=schedulingError(b)||usageError([b]);if(err)throw Error(err);let c=ws().clients.find(c=>c.email.toLowerCase()===data.email.toLowerCase());if(!data.name.trim())throw Error('Please enter your name.');if(!c){c={id:uid(),name:data.name.trim(),email:data.email.trim(),tags:['New'],notes:''};ws().clients.push(c)}b.clientId=c.id;ws().bookings.push(b);log(c.name+' booked '+s.name+' through the booking page');persist();UI.publicTime='';render();modal('A good moment, on the calendar',`<span class="service-icon" style="margin-bottom:20px">${icon('check')}</span><h2>You’re booked, ${esc(data.name.split(' ')[0])}.</h2><p class="muted" style="margin-top:12px">${esc(s.name)} with ${esc(st.name)}<br>${fmtDate(parts(b.start,UI.publicZone).date,{weekday:'long',month:'long',day:'numeric'})} at ${fmtTime(b.start,UI.publicZone)}<br>${esc(UI.publicZone)}</p><p class="help" style="margin-top:20px">Saved in this browser. Confirmation email and payment are simulated.</p>`,btn('Lovely, thank you','close-modal','primary'));break}case'waitlist':{if(!data.name.trim())throw Error('Please enter your name.');const s=ws().services.find(s=>s.id===UI.publicService)||ws().services[0];if(ws().waitlist.some(x=>x.email.toLowerCase()===data.email.toLowerCase()&&x.date===UI.publicDate&&x.serviceId===s.id))throw Error('You’re already on the waitlist for this day and service.');ws().waitlist.push({id:uid(),name:data.name.trim(),email:data.email,date:UI.publicDate,serviceId:s.id});log(data.name+' joined the waitlist');persist();closeModal();toast('You’re on the list. Request saved locally.');break}case'api-key':{if(!admin()||ws().plan!=='Business')throw Error('Business admin access is required.');const token='bf_demo_'+uid().replaceAll('-',''),k={id:uid(),name:data.name.trim(),last:token.slice(-4),date:dateKey()};if(!k.name)throw Error('Please name your mock key.');ws().keys.push(k);log('Created mock API key '+k.name);persist();render();modal('Your new mock key',`<p class="help" style="margin-bottom:16px">Copy it now. Only its last four characters are stored. This is a non-functional demo key.</p><code>${token}</code>`, '<button class="btn primary" id="copy-generated-key">Copy mock key</button>');$('#copy-generated-key').onclick=()=>copyText(token);break}}}catch(err){if(error?.isConnected)error.textContent=err.message;else toast(err.message)}});
+// Pointer drag shares the exact conflict validation used by forms and booking pages.
+document.addEventListener('dragstart',e=>{const el=e.target.closest('[data-drag-id]');if(!el)return;const b=ws().bookings.find(x=>x.id===el.dataset.dragId);if(!b||!canEdit(b)||role()==='Client'){e.preventDefault();return}e.dataTransfer.setData('text/bookflow',b.id);e.dataTransfer.effectAllowed='move';el.style.opacity='.45'});
+document.addEventListener('dragend',e=>{if(e.target.style)e.target.style.opacity='';$$('.over').forEach(x=>x.classList.remove('over'))});
+document.addEventListener('dragover',e=>{const cell=e.target.closest('[data-drop-date]');if(cell){e.preventDefault();e.dataTransfer.dropEffect='move';$$('.over').forEach(x=>x!==cell&&x.classList.remove('over'));cell.classList.add('over')}});
+document.addEventListener('dragleave',e=>{const cell=e.target.closest('[data-drop-date]');if(cell&&!cell.contains(e.relatedTarget))cell.classList.remove('over')});
+document.addEventListener('drop',e=>{const cell=e.target.closest('[data-drop-date]');if(!cell)return;e.preventDefault();cell.classList.remove('over');const b=ws().bookings.find(x=>x.id===e.dataTransfer.getData('text/bookflow'));if(!b||!canEdit(b)||role()==='Client')return;try{const old=b.start;const time=UI.calView==='month'?parts(b.start,displayZone()).time:cell.dataset.dropTime;const next={...b,start:wallISO(cell.dataset.dropDate,time,displayZone())};const err=schedulingError(next,b.id);if(err)return toast(err);const other=ws().bookings;ws().bookings=other.filter(x=>x.id!==b.id);const limit=usageError([next]);ws().bookings=other;if(limit)return toast(limit);b.start=next.start;log('Moved '+client(b.clientId).name+'’s appointment');persist();render();toast('Moved to '+fmtDate(parts(b.start,displayZone()).date)+' · '+fmtTime(b.start),'Undo',()=>{const check=schedulingError({...b,start:old},b.id);if(check)return toast('Cannot undo: '+check);b.start=old;log('Undid appointment move');persist();render();toast('Move undone')})}catch(err){toast(err.message)}});
+let shortcutPrefix='';document.addEventListener('keydown',e=>{const inField=['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName)||e.target.isContentEditable;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();commandPalette();return}if($('.modal')){if(e.key==='Escape'){e.preventDefault();closeModal();return}const focusables=$$('a[href],button:not(:disabled),input,select,textarea,[tabindex="0"]',$('.modal')).filter(x=>x.getClientRects().length);if(e.key==='Tab'&&focusables.length){const first=focusables[0],last=focusables.at(-1);if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}}if($('#command')&&['ArrowDown','ArrowUp'].includes(e.key)){e.preventDefault();const items=$$('.command-result');let index=items.indexOf(document.activeElement);index=e.key==='ArrowDown'?(index+1)%items.length:(index-1+items.length)%items.length;items[index]?.focus()}return}if(inField||e.ctrlKey||e.metaKey||e.altKey)return;if(e.key==='Enter'&&e.target.matches('[role=button],.cal-cell')){e.preventDefault();e.target.click();return}if(e.key==='n'&&allowed('bookings')){e.preventDefault();bookingForm()}if(shortcutPrefix==='g'){const routes={c:'calendar',d:'dashboard',b:'bookings'};if(routes[e.key]&&allowed(routes[e.key]))go(routes[e.key]);shortcutPrefix=''}else if(e.key==='g'){shortcutPrefix='g';setTimeout(()=>shortcutPrefix='',1000)}});
+window.addEventListener('hashchange',()=>{UI.selected.clear();UI.query='';render();$('#main')?.focus({preventScroll:true});window.scrollTo(0,0)});
+// A short, action-triggered loading state for first render; no looping animations.
+$('#app').innerHTML=shell('<div role="status" aria-label="Loading workspace"><div class="skeleton"></div><div class="skeleton"></div><span class="visually-hidden">Preparing your workspace…</span></div>');
+setTimeout(()=>{render();if(storageFailed)toast('Local storage is unavailable. This demo will keep changes for this session.')},180);
+setInterval(()=>{if(route()==='dashboard'&&admin())simulateIncoming(true)},120000);
+</script>
+</body>
+</html>
