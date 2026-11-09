@@ -1,6 +1,6 @@
 # BookFlow
 
-A scheduling SaaS prototype with a **React.js frontend and Python FastAPI backend**. The original standalone HTML demo is also preserved at `index.html`.
+A scheduling SaaS prototype with a **React.js frontend and Python FastAPI backend**. All frontend screens and interactions are implemented as React components in `frontend/src`; there is no standalone HTML version.
 
 ## Start the project
 
@@ -124,7 +124,8 @@ backend/
   scheduling.py     # Authoritative scheduling and quotas
   database.py       # SQLite schema and connection/transaction helpers
   tests/            # API integration and concurrency tests
-index.html          # Original self-contained offline demo
 ```
+
+`frontend/index.html` is Vite's minimal browser entry: it contains only metadata, the React root element, and the JavaScript entry script. Application markup and behavior are rendered by React. This bootstrap file is excluded from GitHub's language statistics.
 
 Official references: [React documentation](https://react.dev/learn), [FastAPI testing documentation](https://fastapi.tiangolo.com/tutorial/testing/).

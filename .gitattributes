@@ -1,0 +1,2 @@
+# Vite's browser bootstrap is infrastructure, not an alternate HTML frontend.
+frontend/index.html linguist-detectable=false
