@@ -135,7 +135,7 @@ export default function Shell({ children }) {
           <div className="topright">
             <button
               className="search-trigger"
-              aria-label="Search BookFlow"
+              aria-label="Search BebinBook"
               onClick={() => show("command")}
             >
               <Icon name="search" />

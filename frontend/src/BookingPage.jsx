@@ -35,7 +35,7 @@ export function BookingPage() {
             <span className="workspace-icon">{initials(a.w.name)}</span>
             <div>
               <h2>{a.w.name}</h2>
-              <p className="subtext">bookflow / {a.w.slug}</p>
+              <p className="subtext">bebinbook / {a.w.slug}</p>
             </div>
           </div>
           <Button icon="external" onClick={() => a.go("public")}>
@@ -178,7 +178,7 @@ export function PublicBooking({ embedded = false }) {
       {!embedded && (
         <header className="public-header">
           <a href="#landing" className="small muted">
-            Powered by BookFlow ↗
+            Powered by BebinBook ↗
           </a>
           <div
             className="workspace-icon"

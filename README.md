@@ -1,4 +1,4 @@
-# BookFlow
+# BebinBook
 
 A scheduling SaaS prototype with a **React.js frontend and Python FastAPI backend**. All frontend screens and interactions are implemented as React components in `frontend/src`; there is no standalone HTML version.
 

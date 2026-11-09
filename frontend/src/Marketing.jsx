@@ -34,7 +34,7 @@ export function Landing() {
                 });
             }}
           >
-            Why BookFlow
+            Why BebinBook
           </a>
           <a href="#pricing">Pricing</a>
           <a href="#login">Log in</a>
@@ -62,7 +62,7 @@ export function Landing() {
               what <em>matters.</em>
             </h1>
             <p>
-              Meet BookFlow. The thoughtful scheduling platform that brings your
+              Meet BebinBook. The thoughtful scheduling platform that brings your
               team, your clients, and your time into a better rhythm.
             </p>
             <div className="row wrap">
@@ -200,7 +200,7 @@ export function Landing() {
               "Absolutely. Explore the demo workspace with sample bookings, clients and services. Browser mode needs no backend.",
             ],
             [
-              "Can my whole team use BookFlow?",
+              "Can my whole team use BebinBook?",
               "Each workspace has its own team, availability, services and booking page. Pro includes five seats; Business includes twenty-five.",
             ],
             [
@@ -236,7 +236,7 @@ export function Landing() {
       </main>
       <footer className="marketing-nav">
         <span className="muted small">
-          © {new Date().getFullYear()} BookFlow · Interactive product demo
+          © {new Date().getFullYear()} BebinBook · Interactive product demo
         </span>
         <a className="link small" href="#dashboard">
           Open demo workspace ↗
@@ -455,7 +455,7 @@ export function Onboarding() {
     w.activity = [
       {
         id: uid(),
-        text: "Your workspace is ready. Welcome to BookFlow!",
+        text: "Your workspace is ready. Welcome to BebinBook!",
         time: Date.now(),
       },
     ];

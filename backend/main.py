@@ -1,4 +1,4 @@
-"""BookFlow development API: real sessions and tenancy; simulated paid services."""
+"""BebinBook development API: real sessions and tenancy; simulated paid services."""
 import copy
 import hashlib
 import hmac
@@ -31,7 +31,7 @@ async def lifespan(app):
     database.initialize()
     yield
 
-app = FastAPI(title='BookFlow API', version='1.0.0', lifespan=lifespan, description='SQLite-backed development API. Billing, integration connections, reset delivery and API keys are simulations.')
+app = FastAPI(title='BebinBook API', version='1.0.0', lifespan=lifespan, description='SQLite-backed development API. Billing, integration connections, reset delivery and API keys are simulations.')
 app.add_middleware(CORSMiddleware, allow_origins=ORIGINS, allow_credentials=True, allow_methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], allow_headers=['Content-Type'])
 
 @app.middleware('http')

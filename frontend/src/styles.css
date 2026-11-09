@@ -134,19 +134,29 @@ small,
   letter-spacing: -0.8px;
   font-weight: 700;
 }
-.mark {
-  display: inline-grid;
-  place-items: center;
-  width: 32px;
+.brand-logo-image {
+  display: block;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 10px;
+}
+.brand-word-accent {
+  color: #0757e8;
+}
+.sidebar .brand-word-accent,
+.authaside .brand-word-accent,
+[data-theme="dark"] .brand-word-accent {
+  color: #8fb5ff;
+}
+.sidebar .logo {
+  font-size: 20px;
+  gap: 9px;
+}
+.sidebar .brand-logo-image {
+  width: 34px;
   height: 34px;
-  background: var(--lime);
-  color: #172b25;
-  border-radius: 9px 9px 9px 2px;
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -6px;
-  padding-right: 6px;
 }
 .btn {
   display: inline-flex;

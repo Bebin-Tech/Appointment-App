@@ -25,12 +25,16 @@ export function Icon({ name }) {
 }
 export function Logo() {
   return (
-    <a href="#landing" className="logo" aria-label="BookFlow home">
-      <span className="mark" aria-hidden="true">
-        bf
-      </span>
+    <a href="#landing" className="logo" aria-label="BebinBook home">
+      <img
+        className="brand-logo-image"
+        src="/bebinbook-logo.png"
+        alt=""
+        width="40"
+        height="40"
+      />
       <span className="logo-name">
-        BookFlow<span style={{ color: "var(--lime)" }}>.</span>
+        Bebin<span className="brand-word-accent">Book</span>
       </span>
     </a>
   );

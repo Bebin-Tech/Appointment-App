@@ -156,7 +156,7 @@ export default function App() {
     document.title =
       (page === "landing"
         ? "Make room for what matters"
-        : page[0].toUpperCase() + page.slice(1)) + " · BookFlow";
+        : page[0].toUpperCase() + page.slice(1)) + " · BebinBook";
   }, [state.theme, w.color, page]);
   const refresh = useCallback(async () => {
     const workspaces = await api.list();

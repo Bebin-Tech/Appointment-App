@@ -19,6 +19,6 @@ if (-not (Test-Path -LiteralPath (Join-Path $projectRoot 'frontend\dist\index.ht
 }
 Push-Location $projectRoot
 try {
-    Write-Host 'BookFlow: http://127.0.0.1:8000/  | API docs: http://127.0.0.1:8000/docs'
+    Write-Host 'BebinBook: http://127.0.0.1:8000/  | API docs: http://127.0.0.1:8000/docs'
     & $pythonPath -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 } finally { Pop-Location }

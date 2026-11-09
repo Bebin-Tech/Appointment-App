@@ -1,1 +1,1 @@
-"""BookFlow FastAPI backend."""
+"""BebinBook FastAPI backend."""
