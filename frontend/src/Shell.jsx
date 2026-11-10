@@ -65,7 +65,10 @@ export default function Shell({ children }) {
             <div className="row between">
               <strong style={{ color: "white" }}>{w.plan} workspace</strong>✧
             </div>
-            <div className="subtext" style={{ color: "#9eb2a6" }}>
+            <div
+              className="subtext"
+              style={{ color: "var(--on-sidebar-muted)" }}
+            >
               {count} / {w.plan === "Business" ? "∞" : plans[w.plan].bookings}{" "}
               monthly bookings
             </div>

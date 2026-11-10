@@ -251,8 +251,8 @@ export function seed() {
     collapsed: false,
     profile: { name: "Olivia Bennett", email: "olivia@formstudio.example" },
     workspaces: [
-      seedWorkspace("ws1", "Form Studio", "#4c7962"),
-      seedWorkspace("ws2", "Northstar Co.", "#6d63a2", "Business"),
+      seedWorkspace("ws1", "Form Studio", "#0757e8"),
+      seedWorkspace("ws2", "Northstar Co.", "#2145a0", "Business"),
     ],
   };
 }

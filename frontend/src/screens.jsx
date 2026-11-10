@@ -214,10 +214,10 @@ export function Dashboard() {
                   style={{
                     background:
                       a.service(b.serviceId).color === "green"
-                        ? "#7d9f85"
+                        ? "var(--service-2)"
                         : a.service(b.serviceId).color === "blue"
-                          ? "#7c9fb6"
-                          : "#a092cf",
+                          ? "var(--service-3)"
+                          : "var(--service-1)",
                   }}
                 />
                 <div style={{ minWidth: 0 }}>
@@ -279,7 +279,7 @@ export function Dashboard() {
             <div className="panelhead">
               <h2>Recent activity</h2>
               <span className="tag">
-                <span className="badge-dot" style={{ color: "#588866" }} />
+                <span className="badge-dot" style={{ color: "var(--brand)" }} />
                 {a.live ? "Workspace" : "Live demo"}
               </span>
             </div>
@@ -965,10 +965,10 @@ export function Services() {
               style={{
                 background:
                   s.color === "purple"
-                    ? "#9a87c4"
+                    ? "var(--service-1)"
                     : s.color === "blue"
-                      ? "#7a9eb7"
-                      : "#80a18a",
+                      ? "var(--service-3)"
+                      : "var(--service-2)",
               }}
             />
             <div className="pad">

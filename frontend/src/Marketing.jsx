@@ -24,14 +24,11 @@ export function Landing() {
             href="#features"
             onClick={(e) => {
               e.preventDefault();
-              document
-                .getElementById("features")
-                ?.scrollIntoView({
-                  behavior: matchMedia("(prefers-reduced-motion:reduce)")
-                    .matches
-                    ? "instant"
-                    : "smooth",
-                });
+              document.getElementById("features")?.scrollIntoView({
+                behavior: matchMedia("(prefers-reduced-motion:reduce)").matches
+                  ? "instant"
+                  : "smooth",
+              });
             }}
           >
             Why BebinBook
@@ -49,8 +46,8 @@ export function Landing() {
             <span
               className="tag"
               style={{
-                background: "var(--lime)",
-                color: "#2c4a30",
+                background: "var(--highlight)",
+                color: "var(--on-highlight)",
                 marginBottom: 24,
               }}
             >
@@ -62,8 +59,8 @@ export function Landing() {
               what <em>matters.</em>
             </h1>
             <p>
-              Meet BebinBook. The thoughtful scheduling platform that brings your
-              team, your clients, and your time into a better rhythm.
+              Meet BebinBook. The thoughtful scheduling platform that brings
+              your team, your clients, and your time into a better rhythm.
             </p>
             <div className="row wrap">
               <a href="#signup" className="btn primary">
@@ -228,7 +225,7 @@ export function Landing() {
               <h2>A better rhythm starts here.</h2>
               <p>Give your business a little more room to grow.</p>
             </div>
-            <a href="#signup" className="btn lime">
+            <a href="#signup" className="btn highlight">
               Create your workspace <Icon name="arrow" />
             </a>
           </div>
@@ -279,7 +276,9 @@ export function Auth({ type }) {
           </h2>
           <p>A thoughtful home for a beautifully busy business.</p>
         </div>
-        <small style={{ color: "#9ab4a3" }}>Make room for what matters.</small>
+        <small style={{ color: "var(--on-sidebar-muted)" }}>
+          Make room for what matters.
+        </small>
       </aside>
       <main className="authmain" id="main">
         <div className="authform">
@@ -510,7 +509,7 @@ export function Onboarding() {
                 label="Logo color"
                 name="color"
                 type="color"
-                value={draft.color || "#4c7962"}
+                value={draft.color || "#0757e8"}
               />
               <Zone name="timezone" value={draft.timezone || localZone} />
             </>

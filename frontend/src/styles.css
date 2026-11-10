@@ -1,37 +1,55 @@
 :root {
-  --bg: #f4f6f5;
+  --bg: #f3f7ff;
   --surface: #fff;
-  --surface2: #f8faf9;
-  --text: #1b3029;
-  --muted: #62736b;
-  --line: #e1e8e4;
-  --brand: #235c45;
-  --brand-hover: #174530;
-  --lime: #d6ed85;
-  --sidebar: #172b25;
-  --side-text: #bdccc5;
-  --accent: #6e5acb;
-  --blue: #386c94;
+  --surface2: #f7faff;
+  --text: #132b50;
+  --muted: #586b87;
+  --line: #dce5f3;
+  --brand: #0757e8;
+  --brand-hover: #0646bc;
+  --highlight: #dce9ff;
+  --on-highlight: #153d83;
+  --brand-soft: #eaf2ff;
+  --brand-border: #cbdfff;
+  --sidebar: #091e49;
+  --side-text: #c1d2ee;
+  --on-sidebar-muted: #adc3e7;
+  --accent: #2757b8;
+  --blue: #2168bc;
+  --service-1: #7699e8;
+  --service-2: #4090db;
+  --service-3: #829cc9;
+  --welcome-start: #e5efff;
+  --welcome-end: #f3f8ff;
+  --welcome-text: #143e80;
+  --welcome-muted: #41638e;
   --danger: #ad3545;
-  --shadow: 0 12px 40px #16392b0b;
+  --shadow: 0 12px 40px #163a7a0b;
   --radius: 12px;
   --font:
     Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
-  --company: #4c7962;
+  --company: #0757e8;
 }
 [data-theme="dark"] {
-  --bg: #101c17;
-  --surface: #18271f;
-  --surface2: #1e3026;
-  --text: #e5efe7;
-  --muted: #a6b9ad;
-  --line: #32473a;
-  --brand: #a9d6b6;
-  --brand-hover: #cee9d4;
-  --lime: #d6ed85;
-  --accent: #bcabff;
-  --blue: #98c9ed;
+  --bg: #0a1426;
+  --surface: #12213b;
+  --surface2: #192c49;
+  --text: #e9f1ff;
+  --muted: #adbfdb;
+  --line: #304563;
+  --brand: #8fb5ff;
+  --brand-hover: #b8d0ff;
+  --highlight: #dce9ff;
+  --on-highlight: #153d83;
+  --brand-soft: #1c355a;
+  --brand-border: #385985;
+  --accent: #aac7ff;
+  --blue: #99caff;
+  --welcome-start: #172f56;
+  --welcome-end: #1b2945;
+  --welcome-text: #e5efff;
+  --welcome-muted: #b5c9e9;
   --danger: #ff9ba9;
   --shadow: 0 12px 40px #0002;
 }
@@ -82,7 +100,7 @@ select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible,
 [tabindex]:focus-visible {
-  outline: 3px solid #8872f1;
+  outline: 3px solid #3379ef;
   outline-offset: 3px;
 }
 h1,
@@ -183,10 +201,10 @@ small,
 .btn.primary:hover {
   background: var(--brand-hover);
 }
-.btn.lime {
-  background: var(--lime);
-  color: #172b25;
-  border-color: var(--lime);
+.btn.highlight {
+  background: var(--highlight);
+  color: var(--on-highlight);
+  border-color: var(--highlight);
 }
 .btn.danger {
   color: var(--danger);
@@ -273,8 +291,8 @@ small,
 }
 .tag.confirmed,
 .tag.active {
-  background: #e6f3eb;
-  color: #286b47;
+  background: #e9f2ff;
+  color: #1754a4;
 }
 .tag.pending,
 .tag.waitlist {
@@ -291,8 +309,8 @@ small,
   color: #a02f45;
 }
 .tag.purple {
-  background: #f0ecff;
-  color: #7052af;
+  background: #e9eeff;
+  color: #3355a0;
 }
 .avatar {
   width: 34px;
@@ -302,21 +320,21 @@ small,
   place-items: center;
   font-size: 11px;
   font-weight: 650;
-  background: #eae6f5;
-  color: #675589;
+  background: #e4ecff;
+  color: #3b5797;
   flex-shrink: 0;
 }
 .avatar.green {
-  background: #deebe1;
-  color: #3b6950;
+  background: #e1efff;
+  color: #255c9e;
 }
 .avatar.gold {
-  background: #f2e8d7;
-  color: #8b663c;
+  background: #e7edfa;
+  color: #425e91;
 }
 .avatar.blue {
-  background: #ddebf0;
-  color: #416c7c;
+  background: #e0edff;
+  color: #2f5e96;
 }
 .subtext {
   font-size: 12px;
@@ -461,7 +479,7 @@ small,
 }
 .sidegroup {
   font-size: 11px;
-  color: #829b8e;
+  color: #96b1d9;
   padding: 16px 14px 7px;
 }
 .sidenav {
@@ -483,8 +501,8 @@ small,
   color: #fff;
 }
 .navitem.active {
-  background: #cce5a41a;
-  color: var(--lime);
+  background: #478cff30;
+  color: var(--highlight);
 }
 .navitem .count {
   margin-left: auto;
@@ -508,10 +526,10 @@ small,
   background: #ffffff1c;
 }
 .planbox .progress span {
-  background: var(--lime);
+  background: var(--highlight);
 }
 .planbox .link {
-  color: var(--lime);
+  color: var(--highlight);
   font-size: 12px;
 }
 .sideprofile {
@@ -526,7 +544,7 @@ small,
   font-size: 12px;
 }
 .sideprofile .subtext {
-  color: #9eb2a6;
+  color: var(--on-sidebar-muted);
   font-size: 10px;
 }
 .appmain {
@@ -647,12 +665,12 @@ small,
 .welcome {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(110deg, #eaf1e8, #eff3e8);
-  border: 1px solid #dce6d8;
+  background: linear-gradient(110deg, var(--welcome-start), var(--welcome-end));
+  border: 1px solid var(--brand-border);
   padding: 22px 25px;
   margin-bottom: 24px;
   border-radius: 10px;
-  color: #1b3a2a;
+  color: var(--welcome-text);
 }
 .welcome h2 {
   font-size: 21px;
@@ -660,7 +678,7 @@ small,
   margin-bottom: 5px;
 }
 .welcome p {
-  color: #536f5c;
+  color: var(--welcome-muted);
   font-size: 12px;
 }
 .metrics {
@@ -685,7 +703,7 @@ small,
 .metric-label .icon {
   width: 16px;
   height: 16px;
-  color: #87998e;
+  color: #7b91b1;
 }
 .metric-value {
   font-size: 29px;
@@ -751,7 +769,7 @@ small,
   height: 38px;
   width: 3px;
   border-radius: 3px;
-  background: #9ea6de;
+  background: var(--service-1);
 }
 .schedule-title {
   font-size: 13px;
@@ -806,8 +824,8 @@ small,
 .activity-item .activity-dot {
   width: 27px;
   height: 27px;
-  background: #eaf1eb;
-  color: #407557;
+  background: var(--brand-soft);
+  color: var(--brand);
   border-radius: 50%;
   display: grid;
   place-items: center;
@@ -835,7 +853,7 @@ small,
   gap: 15px;
 }
 .bookinglink .link-icon {
-  background: #edf2e8;
+  background: var(--brand-soft);
   color: var(--brand);
   border-radius: 8px;
   padding: 10px;
@@ -1046,7 +1064,7 @@ tr:hover td {
   position: relative;
 }
 .cal-cell.over {
-  background: #d6ed8540;
+  background: #0757e81a;
   outline: 2px dashed var(--brand);
   outline-offset: -3px;
 }
@@ -1054,8 +1072,8 @@ tr:hover td {
   background: var(--surface2);
 }
 .cal-event {
-  background: #e9e5f7;
-  border-left: 3px solid #8a77c3;
+  background: #e8eeff;
+  border-left: 3px solid var(--service-1);
   border-radius: 4px;
   padding: 6px;
   font-size: 10px;
@@ -1063,7 +1081,7 @@ tr:hover td {
   position: relative;
   z-index: 1;
   overflow: hidden;
-  color: #493b68;
+  color: #304983;
   min-height: 57px;
   display: block;
   width: 100%;
@@ -1083,14 +1101,14 @@ tr:hover td {
   white-space: nowrap;
 }
 .cal-event.green {
-  background: #e3eee5;
-  border-color: #719c7c;
-  color: #31533c;
+  background: #e5f1ff;
+  border-color: var(--service-2);
+  color: #1c5087;
 }
 .cal-event.blue {
-  background: #e3edf4;
-  border-color: #71a1c2;
-  color: #355770;
+  background: #eaf0fb;
+  border-color: var(--service-3);
+  color: #35547f;
 }
 .cal-event span {
   opacity: 0.8;
@@ -1440,7 +1458,7 @@ tr:hover td {
   padding: 24px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  box-shadow: 20px 25px 0 var(--lime);
+  box-shadow: 20px 25px 0 var(--highlight);
 }
 .hero-demo h3 {
   font-size: 19px;
@@ -1521,7 +1539,7 @@ tr:hover td {
   font-size: 30px;
 }
 .cta p {
-  color: #b6cabd;
+  color: var(--on-sidebar-muted);
   margin-top: 10px;
 }
 .authpage {
@@ -1547,7 +1565,7 @@ tr:hover td {
   max-width: 400px;
 }
 .authaside p {
-  color: #a8c0b1;
+  color: var(--on-sidebar-muted);
   margin-top: 24px;
   max-width: 370px;
   font-size: 15px;
@@ -1611,7 +1629,7 @@ tr:hover td {
 .modal-backdrop {
   position: fixed;
   inset: 0;
-  background: #07191080;
+  background: #06163390;
   backdrop-filter: blur(3px);
   z-index: 100;
   display: flex;
@@ -1667,7 +1685,7 @@ tr:hover td {
 }
 .toast {
   background: var(--sidebar);
-  border: 1px solid #476354;
+  border: 1px solid #3b5a87;
   color: #fff;
   padding: 13px 16px;
   border-radius: 9px;
@@ -1680,12 +1698,12 @@ tr:hover td {
 .toast button {
   border: 0;
   background: none;
-  color: var(--lime);
+  color: var(--highlight);
   font-size: 12px;
   font-weight: 600;
 }
 .toast .icon {
-  color: var(--lime);
+  color: var(--highlight);
   width: 17px;
 }
 .command-input {
@@ -1798,7 +1816,7 @@ h3 {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .month-cell.over {
-  background: #d6ed8540;
+  background: #0757e81a;
   outline: 2px dashed var(--brand);
   outline-offset: -3px;
 }
@@ -2193,7 +2211,7 @@ h3 {
   }
   .hero-demo {
     padding: 20px;
-    box-shadow: 10px 12px 0 var(--lime);
+    box-shadow: 10px 12px 0 var(--highlight);
   }
   .marketing-section {
     padding: 48px 24px;

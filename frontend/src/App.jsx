@@ -46,15 +46,24 @@ function load() {
           Array.isArray(w.services) &&
           Array.isArray(w.clients),
       )
-    )
+    ) {
+      // Refresh the original sample workspace colors without changing custom
+      // branding or discarding any appointments saved in this browser.
+      for (const workspace of s.workspaces) {
+        if (workspace.id === "ws1" && workspace.color === "#4c7962")
+          workspace.color = "#0757e8";
+        if (workspace.id === "ws2" && workspace.color === "#6d63a2")
+          workspace.color = "#2145a0";
+      }
       return s;
+    }
   } catch {
     storageUnavailable = true;
   }
   return seed();
 }
 function placeholder(profile) {
-  const w = seedWorkspace("pending", "Your workspace", "#4c7962", "Free");
+  const w = seedWorkspace("pending", "Your workspace", "#0757e8", "Free");
   w.bookings = [];
   w.clients = [];
   w.services = [];
