@@ -1,4 +1,9 @@
 import copy
+import os
+from uuid import uuid4
+import psycopg
+from psycopg import sql
+from psycopg.conninfo import make_conninfo
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timedelta, timezone
 import pytest
@@ -6,11 +11,24 @@ from fastapi.testclient import TestClient
 from backend import database
 from backend.main import app
 
-@pytest.fixture
-def client(tmp_path, monkeypatch):
+@pytest.fixture(params=['sqlite'] + (['postgresql'] if os.environ.get('TEST_DATABASE_URL') else []))
+def client(tmp_path, monkeypatch, request):
     monkeypatch.setattr(database, 'DB_PATH', str(tmp_path / 'test.sqlite3'))
-    with TestClient(app) as c:
-        yield c
+    monkeypatch.setattr(database, 'DATABASE_URL', None)
+    schema = None
+    if request.param == 'postgresql':
+        schema = 'bebinbook_test_' + uuid4().hex
+        url = os.environ['TEST_DATABASE_URL']
+        with psycopg.connect(url, autocommit=True) as db:
+            db.execute(sql.SQL('CREATE SCHEMA {}').format(sql.Identifier(schema)))
+        monkeypatch.setattr(database, 'DATABASE_URL', make_conninfo(url, options='-c search_path=' + schema))
+    try:
+        with TestClient(app) as c:
+            yield c
+    finally:
+        if schema:
+            with psycopg.connect(url, autocommit=True) as db:
+                db.execute(sql.SQL('DROP SCHEMA {} CASCADE').format(sql.Identifier(schema)))
 
 def signup(c, email='owner@example.com'):
     r = c.post('/api/auth/signup', json={'name': 'Olivia Bennett', 'email': email, 'password': 'example-password'})
@@ -43,6 +61,24 @@ def test_auth_session_and_logout(client):
     assert client.get('/api/auth/me').status_code == 401
     assert client.post('/api/auth/login', json={'email':'owner@example.com','password':'incorrect-password'}).status_code == 401
     assert client.post('/api/auth/login', json={'email':'owner@example.com','password':'example-password'}).status_code == 200
+
+
+def test_new_device_and_public_booking_share_persistent_workspace(client):
+    w = workspace(client)
+    # A public visitor has no owner session and uses only the shared slug.
+    with TestClient(app) as visitor:
+        booking = visitor.post('/api/public/' + w['slug'] + '/bookings', json=public_data(w))
+        assert booking.status_code == 201, booking.text
+        assert visitor.get('/api/workspaces').status_code == 401
+    # A fresh device logs in with the same credentials and reads server data.
+    with TestClient(app) as device:
+        assert device.get('/api/auth/me').status_code == 401
+        login = device.post('/api/auth/login', json={'email': 'owner@example.com', 'password': 'example-password'})
+        assert login.status_code == 200
+        shared = device.get('/api/workspaces').json()[0]
+        assert shared['id'] == w['id']
+        assert shared['bookings'][0]['id'] == booking.json()['id']
+    assert client.get('/api/workspaces').json()[0]['bookings'][0]['id'] == booking.json()['id']
 
 def test_tenant_isolation(client):
     w = workspace(client)

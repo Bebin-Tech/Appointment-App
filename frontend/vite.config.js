@@ -1,5 +1,8 @@
 import { defineConfig } from "vite";
 export default defineConfig(({ mode }) => ({
+  ...(mode === "connected"
+    ? { define: { "import.meta.env.VITE_CONNECTED_ONLY": '"true"' } }
+    : {}),
   ...(mode === "demo"
     ? { define: { "import.meta.env.VITE_DEMO_ONLY": '"true"' } }
     : {}),
