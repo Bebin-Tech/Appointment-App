@@ -1,5 +1,10 @@
 const BASE = import.meta.env.VITE_API_URL || "/api";
+export const DEMO_ONLY = import.meta.env.VITE_DEMO_ONLY === "true";
 export async function request(path, options = {}) {
+  if (DEMO_ONLY)
+    throw Error(
+      "This deployment is a browser demo. Data stays on this device.",
+    );
   let response;
   try {
     response = await fetch(BASE + path, {

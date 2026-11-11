@@ -11,7 +11,7 @@ import {
   wallISO,
 } from "./domain.js";
 import { conflict, quota, slots } from "./scheduling.js";
-import { api } from "./api.js";
+import { api, DEMO_ONLY } from "./api.js";
 import Shell from "./Shell.jsx";
 import Dialogs from "./Dialogs.jsx";
 import {
@@ -184,6 +184,10 @@ export default function App() {
   }, []);
   useEffect(() => {
     let canceled = false;
+    if (DEMO_ONLY) {
+      setLoading(false);
+      return;
+    }
     api
       .me()
       .then(async (profile) => {

@@ -84,6 +84,16 @@ FastAPI serves `frontend/dist` if it exists when the server starts. Open http://
 
 ## Configuration
 
+### Vercel browser demo
+
+Import this GitHub repository into Vercel with **Root Directory `frontend`**.
+The included `frontend/vercel.json` runs `npm run build:demo` and publishes `dist`.
+This build uses browser-only onboarding and localStorage; it does not deploy
+FastAPI or create server accounts. Data and booking links are local to each
+visitor's browser. Password reset, payments and integrations are simulated.
+Run `npm run build` for the normal build that can connect to FastAPI.
+The backend needs a persistent database before deploying connected mode to Vercel.
+
 Environment variables (set before starting FastAPI):
 
 | Variable | Default | Purpose |

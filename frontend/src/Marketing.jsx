@@ -10,7 +10,7 @@ import {
   uid,
   localZone,
 } from "./domain.js";
-import { api } from "./api.js";
+import { api, DEMO_ONLY } from "./api.js";
 export function Landing() {
   const a = useApp(),
     [day, setDay] = useState(addDays(dateKey(), 1)),
@@ -244,7 +244,7 @@ export function Landing() {
 }
 export function Auth({ type }) {
   const a = useApp(),
-    [demo, setDemo] = useState(false),
+    [demo, setDemo] = useState(DEMO_ONLY),
     [sent, setSent] = useState(false),
     signup = type === "signup",
     forgot = type === "forgot";
@@ -314,7 +314,9 @@ export function Auth({ type }) {
                 forgot
                   ? "Request demo reset"
                   : signup
-                    ? "Create account"
+                    ? DEMO_ONLY
+                      ? "Create demo workspace"
+                      : "Create account"
                     : demo
                       ? "Log in to browser demo"
                       : "Log in with FastAPI"
@@ -337,7 +339,7 @@ export function Auth({ type }) {
                 maxLength={160}
                 autoComplete="email"
               />
-              {!forgot && (
+              {!forgot && !DEMO_ONLY && (
                 <Field
                   label="Password"
                   name="password"
@@ -352,6 +354,7 @@ export function Auth({ type }) {
                 <input
                   type="checkbox"
                   checked={demo}
+                  disabled={DEMO_ONLY}
                   onChange={(e) => setDemo(e.target.checked)}
                 />{" "}
                 Use browser-only demo (no backend)
@@ -366,9 +369,11 @@ export function Auth({ type }) {
             </Form>
           )}
           <p className="help" style={{ marginTop: 16 }}>
-            {demo
-              ? "Demo credentials are never stored. Use any email and an 8+ character password."
-              : "Connected mode requires the FastAPI server. Passwords are hashed on the server."}
+            {DEMO_ONLY
+              ? "Browser demo: no account or password is created. Workspace data stays on this device and is not shared with other visitors."
+              : demo
+                ? "Demo credentials are never stored. Use any email and an 8+ character password."
+                : "Connected mode requires the FastAPI server. Passwords are hashed on the server."}
           </p>
           <div className="authlinks">
             {signup ? (
