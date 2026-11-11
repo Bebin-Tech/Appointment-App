@@ -84,6 +84,34 @@ FastAPI serves `frontend/dist` if it exists when the server starts. Open http://
 
 ## Configuration
 
+### Vercel connected app
+
+Set the Vercel project Root Directory to the **repository root** (empty), with
+framework/build overrides cleared. The root `vercel.json` uses Vercel Services
+(currently beta) to deploy React and FastAPI together on one domain. The frontend
+runs `npm run build:connected`; signup, login and public booking call `/api`.
+
+Connect a dedicated Neon PostgreSQL database through Vercel Storage. Set these
+server environment variables for the connected deployment:
+
+- `DATABASE_URL`: the pooled PostgreSQL URL with TLS required. `POSTGRES_URL` is
+  also accepted. Never use a `VITE_` prefix for database credentials.
+- `BOOKFLOW_ORIGINS`: `https://bebinbook.vercel.app` (plus any custom production
+  origins). Vercel's deployment and production hostnames are also trusted.
+- `BOOKFLOW_SECURE_COOKIE`: `true` (automatic on Vercel).
+
+The schema is created idempotently when FastAPI starts or handles its first
+database request. No local SQLite fallback is permitted on Vercel. Accounts,
+hashed sessions, memberships, clients and appointments persist in PostgreSQL.
+Existing browser-demo workspaces are not automatically uploaded; sign up and
+complete onboarding to create a shared workspace.
+
+`GET /api/health` verifies the database and reports `storage: postgresql`.
+To run the API suite against PostgreSQL as well as SQLite, set
+`TEST_DATABASE_URL` before running pytest. Each test uses a separate temporary
+schema; the test removes only that schema afterward. Use a dedicated test
+database or preview branch.
+
 ### Vercel browser demo
 
 Import this GitHub repository into Vercel with **Root Directory `frontend`**.
@@ -92,18 +120,19 @@ This build uses browser-only onboarding and localStorage; it does not deploy
 FastAPI or create server accounts. Data and booking links are local to each
 visitor's browser. Password reset, payments and integrations are simulated.
 Run `npm run build` for the normal build that can connect to FastAPI.
-The backend needs a persistent database before deploying connected mode to Vercel.
+Use the root Services configuration above for the connected deployment instead.
 
 Environment variables (set before starting FastAPI):
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
 | `BOOKFLOW_DB` | `backend/bookflow.sqlite3` | SQLite database location |
+| `DATABASE_URL` / `POSTGRES_URL` | unset | PostgreSQL connection string; takes precedence over local SQLite |
 | `BOOKFLOW_ORIGINS` | localhost/127.0.0.1 on ports 5173 and 8000 | Comma-separated trusted origins, including scheme and port |
-| `BOOKFLOW_SECURE_COOKIE` | `false` | Set `true` behind production HTTPS |
+| `BOOKFLOW_SECURE_COOKIE` | `true` on Vercel, otherwise `false` | Secure session cookies over HTTPS |
 | `VITE_API_URL` | `/api` | Optional frontend API base URL; Vite proxies `/api` to localhost:8000 in development |
 
-Authentication uses opaque, seven-day HttpOnly SameSite cookies. Session tokens are hashed in the database. Passwords use salted PBKDF2-SHA256. Mutations require JSON and validate browser origins. Rate limits cover authentication and public requests. SQLite `BEGIN IMMEDIATE` makes validation and slot reservation atomic, and workspace revision checks prevent stale writes.
+Authentication uses opaque, seven-day HttpOnly SameSite cookies. Session tokens are hashed in the database. Passwords use salted PBKDF2-SHA256. Mutations require JSON and validate browser origins. Rate limits cover authentication and public requests. PostgreSQL transaction advisory locks (or SQLite `BEGIN IMMEDIATE` locally) serialize writes so validation and slot reservation are atomic across instances. Workspace revision checks reject stale writes. The current global write lock favors correctness over high write throughput; larger deployments should use finer-grained workspace locks and normalized booking constraints.
 
 ## Assumptions and production path
 
@@ -132,7 +161,7 @@ backend/
   main.py           # FastAPI routes, sessions, tenant access and transactions
   schemas.py        # Pydantic request/data validation
   scheduling.py     # Authoritative scheduling and quotas
-  database.py       # SQLite schema and connection/transaction helpers
+  database.py       # PostgreSQL / local SQLite schema and transaction helpers
   tests/            # API integration and concurrency tests
 ```
 

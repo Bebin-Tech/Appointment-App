@@ -10,7 +10,7 @@ import {
   uid,
   localZone,
 } from "./domain.js";
-import { api, DEMO_ONLY } from "./api.js";
+import { api, DEMO_ONLY, CONNECTED_ONLY } from "./api.js";
 export function Landing() {
   const a = useApp(),
     [day, setDay] = useState(addDays(dateKey(), 1)),
@@ -67,7 +67,9 @@ export function Landing() {
                 Start your workspace <Icon name="arrow" />
               </a>
               <a href="#dashboard" className="btn">
-                Explore the live demo
+                {CONNECTED_ONLY
+                  ? "Open your workspace"
+                  : "Explore the live demo"}
               </a>
             </div>
             <div className="hero-note muted">
@@ -194,7 +196,9 @@ export function Landing() {
           {[
             [
               "Can I try it before signing up?",
-              "Absolutely. Explore the demo workspace with sample bookings, clients and services. Browser mode needs no backend.",
+              CONNECTED_ONLY
+                ? "Try the interactive booking preview above, then create a free workspace to save your appointments."
+                : "Absolutely. Explore the demo workspace with sample bookings, clients and services. Browser mode needs no backend.",
             ],
             [
               "Can my whole team use BebinBook?",
@@ -210,7 +214,7 @@ export function Landing() {
             ],
             [
               "Where is the data stored?",
-              "Browser demo changes stay in localStorage. Connected accounts store their workspace in the backend SQLite database.",
+              "Connected accounts store their workspace securely on the server so appointments are shared across your devices. Browser demo changes stay on one device.",
             ],
           ].map(([q, answer]) => (
             <details key={q}>
@@ -233,10 +237,10 @@ export function Landing() {
       </main>
       <footer className="marketing-nav">
         <span className="muted small">
-          © {new Date().getFullYear()} BebinBook · Interactive product demo
+          © {new Date().getFullYear()} BebinBook
         </span>
         <a className="link small" href="#dashboard">
-          Open demo workspace ↗
+          {CONNECTED_ONLY ? "Open workspace ↗" : "Open demo workspace ↗"}
         </a>
       </footer>
     </div>
@@ -319,7 +323,7 @@ export function Auth({ type }) {
                       : "Create account"
                     : demo
                       ? "Log in to browser demo"
-                      : "Log in with FastAPI"
+                      : "Log in"
               }
             >
               {signup && (
@@ -350,15 +354,17 @@ export function Auth({ type }) {
                   autoComplete={signup ? "new-password" : "current-password"}
                 />
               )}
-              <label className="small row" style={{ marginBottom: 20 }}>
-                <input
-                  type="checkbox"
-                  checked={demo}
-                  disabled={DEMO_ONLY}
-                  onChange={(e) => setDemo(e.target.checked)}
-                />{" "}
-                Use browser-only demo (no backend)
-              </label>
+              {!CONNECTED_ONLY && (
+                <label className="small row" style={{ marginBottom: 20 }}>
+                  <input
+                    type="checkbox"
+                    checked={demo}
+                    disabled={DEMO_ONLY}
+                    onChange={(e) => setDemo(e.target.checked)}
+                  />{" "}
+                  Use browser-only demo (no backend)
+                </label>
+              )}
               {!signup && !forgot && (
                 <p style={{ textAlign: "right", margin: "-5px 0 20px" }}>
                   <a className="link small" href="#forgot">
@@ -373,7 +379,7 @@ export function Auth({ type }) {
               ? "Browser demo: no account or password is created. Workspace data stays on this device and is not shared with other visitors."
               : demo
                 ? "Demo credentials are never stored. Use any email and an 8+ character password."
-                : "Connected mode requires the FastAPI server. Passwords are hashed on the server."}
+                : "Your workspace and bookings sync securely across your devices."}
           </p>
           <div className="authlinks">
             {signup ? (
@@ -389,11 +395,13 @@ export function Auth({ type }) {
               </a>
             )}
           </div>
-          <div className="authlinks">
-            <a className="muted" href="#dashboard">
-              Explore without signing up ↗
-            </a>
-          </div>
+          {!CONNECTED_ONLY && (
+            <div className="authlinks">
+              <a className="muted" href="#dashboard">
+                Explore without signing up ↗
+              </a>
+            </div>
+          )}
         </div>
       </main>
     </div>

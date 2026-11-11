@@ -11,7 +11,7 @@ import {
   wallISO,
 } from "./domain.js";
 import { conflict, quota, slots } from "./scheduling.js";
-import { api, DEMO_ONLY } from "./api.js";
+import { api, DEMO_ONLY, CONNECTED_ONLY } from "./api.js";
 import Shell from "./Shell.jsx";
 import Dialogs from "./Dialogs.jsx";
 import {
@@ -113,7 +113,8 @@ export default function App() {
       state.workspaces[0],
     role = live ? w.memberRole || "Owner" : state.role,
     admin = ["Owner", "Admin"].includes(role),
-    page = hash.slice(1).split("?")[0] || "dashboard",
+    page =
+      hash.slice(1).split("?")[0] || (CONNECTED_ONLY ? "landing" : "dashboard"),
     zone = zoneOverride || w.timezone;
   const service = (id) =>
       w.services.find((x) => x.id === id) || {
@@ -653,8 +654,9 @@ export default function App() {
   else if (page === "landing") screen = <Landing />;
   else if (["login", "signup", "forgot"].includes(page))
     screen = <Auth key={page} type={page} />;
-  else if (page === "onboarding") screen = <Onboarding />;
   else if (page === "public") screen = <PublicBooking key={hash} />;
+  else if (CONNECTED_ONLY && !live) screen = <Auth type="login" />;
+  else if (page === "onboarding") screen = <Onboarding />;
   else {
     const Screen = pages[page];
     screen = (

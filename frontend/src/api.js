@@ -1,5 +1,6 @@
 const BASE = import.meta.env.VITE_API_URL || "/api";
 export const DEMO_ONLY = import.meta.env.VITE_DEMO_ONLY === "true";
+export const CONNECTED_ONLY = import.meta.env.VITE_CONNECTED_ONLY === "true";
 export async function request(path, options = {}) {
   if (DEMO_ONLY)
     throw Error(
@@ -14,7 +15,7 @@ export async function request(path, options = {}) {
     });
   } catch {
     throw Error(
-      "Cannot reach FastAPI. Start the backend on port 8000, or use the browser demo.",
+      "Cannot connect to BebinBook. Check your connection and try again.",
     );
   }
   const body = await response.json().catch(() => ({}));

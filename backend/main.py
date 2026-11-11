@@ -6,7 +6,6 @@ import json
 import os
 import re
 import secrets
-import sqlite3
 import time
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -23,7 +22,10 @@ from .schemas import Credentials, Signup, Forgot, Profile, WorkspaceInput, Publi
 from .scheduling import fail, validate_booking, validate_changes, validate_quotas, PLANS
 
 ORIGINS = [s.strip() for s in os.environ.get('BOOKFLOW_ORIGINS', 'http://127.0.0.1:5173,http://localhost:5173,http://127.0.0.1:8000,http://localhost:8000').split(',')]
-COOKIE_SECURE = os.environ.get('BOOKFLOW_SECURE_COOKIE', 'false').lower() == 'true'
+for host_key in ('VERCEL_URL', 'VERCEL_PROJECT_PRODUCTION_URL'):
+    if os.environ.get(host_key):
+        ORIGINS.append('https://' + os.environ[host_key])
+COOKIE_SECURE = os.environ.get('BOOKFLOW_SECURE_COOKIE', 'true' if os.environ.get('VERCEL') else 'false').lower() == 'true'
 SESSION_DAYS = 7
 
 @asynccontextmanager
@@ -31,7 +33,7 @@ async def lifespan(app):
     database.initialize()
     yield
 
-app = FastAPI(title='BebinBook API', version='1.0.0', lifespan=lifespan, description='SQLite-backed development API. Billing, integration connections, reset delivery and API keys are simulations.')
+app = FastAPI(title='BebinBook API', version='1.0.0', lifespan=lifespan, description='Persistent scheduling API. Billing, integration connections, reset delivery and API keys are simulations.')
 app.add_middleware(CORSMiddleware, allow_origins=ORIGINS, allow_credentials=True, allow_methods=['GET', 'POST', 'PUT', 'PATCH', 'DELETE'], allow_headers=['Content-Type'])
 
 @app.middleware('http')
@@ -79,14 +81,17 @@ def current_user(request: Request):
 
 def rate_limit(request, scope, limit=30, seconds=900):
     host = request.client.host if request.client else 'local'
-    # Do not trust client-provided forwarding headers for identity.
+    # Vercel overwrites this header at its trusted ingress. Local servers use
+    # the socket peer and never trust arbitrary forwarding headers.
+    if os.environ.get('VERCEL'):
+        host = request.headers.get('x-vercel-forwarded-for', host).split(',')[0].strip()
     key = scope + ':' + digest(host)
     now = int(time.time())
     with database.transaction() as db:
         db.execute('DELETE FROM rate_limits WHERE window_start < ?', (now - 86400,))
         row = db.execute('SELECT * FROM rate_limits WHERE bucket=?', (key,)).fetchone()
         if not row or now - row['window_start'] >= seconds:
-            db.execute('INSERT OR REPLACE INTO rate_limits VALUES (?,?,1)', (key, now))
+            db.execute('INSERT INTO rate_limits VALUES (?,?,1) ON CONFLICT (bucket) DO UPDATE SET window_start=excluded.window_start, count=1', (key, now))
         elif row['count'] >= limit:
             fail('Too many attempts. Please try again later.', 429)
         else:
@@ -156,7 +161,9 @@ def accept_invites(db, user):
 
 @app.get('/api/health')
 def health():
-    return {'status': 'ok', 'storage': 'sqlite', 'billing': 'simulated'}
+    with database.read() as db:
+        db.execute('SELECT 1').fetchone()
+    return {'status': 'ok', 'storage': database.storage_kind(), 'billing': 'simulated'}
 
 @app.post('/api/auth/signup', status_code=201)
 def signup(data: Signup, response: Response, request: Request):
@@ -167,7 +174,7 @@ def signup(data: Signup, response: Response, request: Request):
             db.execute('INSERT INTO users VALUES (?,?,?,?)', tuple(user[k] for k in ('id', 'email', 'name', 'password_hash')))
             accept_invites(db, user)
             session(response, db, user['id'])
-    except sqlite3.IntegrityError:
+    except database.IntegrityError:
         fail('An account with this email already exists.', 409)
     return user_profile(user)
 
@@ -228,7 +235,7 @@ def create_workspace(body: WorkspaceInput, user=Depends(current_user)):
     person.update(id=str(uuid4()), name=user['name'], email=user['email'], role='Owner')
     validate_quotas(w)
     with database.transaction() as db:
-        if db.execute('SELECT COUNT(*) FROM memberships WHERE user_id=? AND role=?', (user['id'], 'Owner')).fetchone()[0] >= 20:
+        if db.execute('SELECT COUNT(*) AS count FROM memberships WHERE user_id=? AND role=?', (user['id'], 'Owner')).fetchone()['count'] >= 20:
             fail('The development account workspace limit has been reached.')
         audit(w, 'Created workspace', user, 'Owner')
         db.execute('INSERT INTO workspaces VALUES (?,?,?,0)', (w['id'], w['slug'], json.dumps(w)))
@@ -309,7 +316,7 @@ def update_workspace(wid: str, body: WorkspaceInput, user=Depends(current_user))
         new_ids = {b['id'] for b in new['bookings']}
         for b in old['bookings']:
             if b['id'] not in new_ids:
-                db.execute('INSERT OR REPLACE INTO deleted_bookings VALUES (?,?,?,?,?)',
+                db.execute('INSERT INTO deleted_bookings VALUES (?,?,?,?,?) ON CONFLICT (workspace_id, booking_id) DO UPDATE SET user_id=excluded.user_id, data=excluded.data, expires=excluded.expires',
                            (wid, b['id'], user['id'], json.dumps(b), now + 10))
         for booking_id in new_ids & restored.keys():
             db.execute('DELETE FROM deleted_bookings WHERE workspace_id=? AND booking_id=?', (wid, booking_id))
