@@ -54,6 +54,7 @@ export default function Shell({ children }) {
                 key={id}
                 href={"#" + id}
                 className={"navitem " + (page === id ? "active" : "")}
+                aria-current={page === id ? "page" : undefined}
               >
                 <Icon name={ic} />
                 <span className="navlabel">{t}</span>
@@ -63,12 +64,12 @@ export default function Shell({ children }) {
         <div className="sidebottom">
           <div className="planbox">
             <div className="row between">
-              <strong style={{ color: "white" }}>{w.plan} workspace</strong>✧
+              <strong style={{ color: "var(--text)" }}>
+                {w.plan} workspace
+              </strong>
+              ✧
             </div>
-            <div
-              className="subtext"
-              style={{ color: "var(--on-sidebar-muted)" }}
-            >
+            <div className="subtext" style={{ color: "var(--nav-muted)" }}>
               {count} / {w.plan === "Business" ? "∞" : plans[w.plan].bookings}{" "}
               monthly bookings
             </div>

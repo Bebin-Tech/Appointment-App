@@ -280,7 +280,7 @@ export function Auth({ type }) {
           </h2>
           <p>A thoughtful home for a beautifully busy business.</p>
         </div>
-        <small style={{ color: "var(--on-sidebar-muted)" }}>
+        <small style={{ color: "var(--muted)" }}>
           Make room for what matters.
         </small>
       </aside>
