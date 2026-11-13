@@ -13,7 +13,7 @@ export default function Shell({ children }) {
       ),
   ).length;
   return (
-    <div className={state.collapsed ? "collapsed" : ""}>
+    <div className={"app-shell" + (state.collapsed ? " collapsed" : "")}>
       <aside className="sidebar" aria-label="Main navigation">
         <Logo />
         <nav className="sidenav">
