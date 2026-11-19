@@ -96,8 +96,16 @@ export function Dashboard() {
   return (
     <>
       <Head
-        title={a.role === "Client" ? "Your appointments" : "Overview"}
-        text="A little clarity for your day ahead."
+        title={
+          a.role === "Client"
+            ? "Your appointments"
+            : `Good ${new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"}, ${a.state.profile.name?.split(" ")[0] || "there"}.`
+        }
+        text={
+          a.role === "Client"
+            ? "Make time for what matters."
+            : "Your day, thoughtfully organized."
+        }
       >
         <span className="datebadge">
           <Icon name="calendar" />
@@ -112,29 +120,6 @@ export function Dashboard() {
           New booking
         </Button>
       </Head>
-      <div className="welcome">
-        <div className="welcome-art" aria-hidden="true" />
-        <h2>
-          Good{" "}
-          {new Date().getHours() < 12
-            ? "morning"
-            : new Date().getHours() < 17
-              ? "afternoon"
-              : "evening"}
-          ,{" "}
-          {
-            (a.role === "Client"
-              ? a.myClient?.name
-              : a.state.profile.name
-            )?.split(" ")[0]
-          }{" "}
-          ☀
-        </h2>
-        <p>
-          You have <strong>{list.length} appointments</strong> today. Let’s make
-          every one count.
-        </p>
-      </div>
       <div className="metrics">
         {stats
           .filter((_, i) => a.role !== "Client" || [0, 3].includes(i))
@@ -147,9 +132,6 @@ export function Dashboard() {
               <div className="metric-value">{value}</div>
               <div className="metric-bottom">
                 <strong>{sub}</strong>
-                <svg className="spark" viewBox="0 0 65 24" aria-hidden="true">
-                  <path d="M1 21l7-6 5 2 7-9 6 5 6-7 6 3 7-6 6 3 7-5 6 3" />
-                </svg>
               </div>
             </article>
           ))}

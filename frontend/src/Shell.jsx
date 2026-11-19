@@ -16,6 +16,14 @@ export default function Shell({ children }) {
     <div className={"app-shell" + (state.collapsed ? " collapsed" : "")}>
       <aside className="sidebar" aria-label="Main navigation">
         <Logo />
+        <button
+          className="btn sidebar-create"
+          onClick={() => show("booking")}
+          title="New booking"
+        >
+          <Icon name="plus" />
+          <span>New booking</span>
+        </button>
         <nav className="sidenav">
           {navigation
             .filter(
